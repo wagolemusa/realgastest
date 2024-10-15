@@ -39,7 +39,7 @@ const NewAddress = () => {
         }
 
         addNewAddress(newAddress)
-        router.replace("/me");
+        router.replace("/pay");
 
     }
   return (
