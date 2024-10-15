@@ -1,0 +1,26 @@
+{
+    "id":"2",
+    "name": "God is Great is Gas Solution",
+    "short_name": "gig",
+    "description": "We sale gas with in uganda",
+    "icons":[
+        {
+            "src":"/g.png",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src":"/g.png",
+            "type": "image/png"
+        },
+        {
+            "src":"/g.png",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#3367D6",
+    "background_color": "#3367D6",
+    "start_url": "/",
+    "display":"standalone",
+    "orientation": "portrait"
+}
