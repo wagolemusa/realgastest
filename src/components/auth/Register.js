@@ -6,34 +6,36 @@ import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
 import { toast } from "react-toastify";
 
-
 const Register = () => {
   const router = useRouter();
-    const { error, registerUser, clearErrors } = useContext(AuthContext);
-    const [name, setName] = useState("")
-    const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
-    const [referalCode, setReferalCode] = useState("")
-    const [password, setPassword] = useState("")
+  const { error, registerUser, clearErrors } = useContext(AuthContext);
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [referalCode, setReferalCode] = useState("");
+  const [password, setPassword] = useState("");
 
-    useEffect(() => {
-        if(error){
-            toast.error(error);
-            clearErrors(); 
-        }
-    }, [error, clearErrors])
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      clearErrors(); 
+    }
+  }, [error, clearErrors]);
 
-    const submitHandler = (e) => {
-        e.preventDefault();
+  const submitHandler = async (e) => {
+    e.preventDefault();
     
-        registerUser({ name, username, email, referalCode, password });
+    const result = await registerUser({ name, username, email, referalCode, password });
 
-        console.log("referecode register", referalCode)
-        router.push("/login")
-      };
-    
-
-
+    if (result.error) {
+        // Display error message if there's an issue (e.g., username or email already exists)
+        toast.error(result.error);
+    } else {
+        // Success case
+        toast.success("Registration successful! Redirecting to login...");
+        router.push("/login");
+    }
+};
 
   return (
     <div
@@ -56,11 +58,11 @@ const Register = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block mb-1"> username </label>
+          <label className="block mb-1"> Username </label>
           <input
             className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
             type="text"
-            placeholder="username"
+            placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
@@ -78,12 +80,13 @@ const Register = () => {
             required
           />
         </div>
+
         <div className="mb-4">
-          <label className="block mb-1"> Invitation Code</label>
+          <label className="block mb-1"> Invitation Code </label>
           <input
             className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
             type="text"
-            placeholder="Your invitation Code"
+            placeholder="Your invitation code"
             value={referalCode}
             onChange={(e) => setReferalCode(e.target.value)}
           />

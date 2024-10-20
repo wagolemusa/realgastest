@@ -5,20 +5,38 @@ import fs from 'fs'
 import bcrypt from "bcryptjs"
 
 
-export const registerUser = async(req, res) => {
-    const { name, username, email, referalCode, password } = req.body;
-    const user = await User.create({
-        name,
-        username,
-        email,
-        referalCode,
-        password
-    })
-    console.log("LOOK reF", user)
-    res.status(201).json({
-        user
-    })
-}
+export const registerUser = async (req, res) => {
+  const { name, username, email, referalCode, password } = req.body;
+  
+  try {
+      // Check if a user with the same username already exists
+      const existingUser = await User.findOne({ username });
+      if (existingUser) {
+          return res.status(400).json({ message: 'Username already exists' });
+      }
+
+      // Check if a user with the same email already exists
+      const existingEmail = await User.findOne({ email });
+      if (existingEmail) {
+          return res.status(400).json({ message: 'Email already exists' });
+      }
+
+      // Create the new user
+      const user = await User.create({
+          name,
+          username,
+          email,
+          referalCode,
+          password
+      });
+
+      res.status(201).json({ user });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
 
 export const updateProfile = async (req, res) => {

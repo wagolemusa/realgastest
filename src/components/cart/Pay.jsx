@@ -47,6 +47,7 @@ const Pay = ({ session, addresses }) => {
         }
       );
 
+      console.log("phone", shippingInfo.phoneNo)
       console.log("datasss",{
         amount: amountWithoutTax,
         totalAmount,

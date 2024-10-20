@@ -16,31 +16,28 @@ export const AuthProvider =({ children }) => {
     const router = useRouter;
     
     // Register user
-    const registerUser = async({name, username, email, referalCode, password}) => {
-        try{
-
-            const { data } = await axios.post(
-                `${process.env.ENVIRONMENT_URL}/api/auth/register`,
-                {
-                    name,
-                    username,
-                    email,
-                    referalCode,
-                    password
-                }
-            )
-
-            console.log("rrrrr", referalCode)
-            console.log("bbb", username)
-
-            if(data?.user){
-                router.replace("/login")
-            }
-
-        } catch (error){
-            setError(error?.response?.data?.message)
-        }
-    }
+    const registerUser = async ({ name, username, email, referalCode, password }) => {
+      try {
+          const { data } = await axios.post(
+              `${process.env.ENVIRONMENT_URL}/api/auth/register`,
+              {
+                  name,
+                  username,
+                  email,
+                  referalCode,
+                  password
+              }
+          );
+  
+          // If registration is successful, return user data
+          return { user: data.user };
+          
+      } catch (error) {
+          // Return error message for handling in the component
+          return { error: error?.response?.data?.message || "Registration failed. Please try again." };
+      }
+  };
+  
 
 
     // // Load User
