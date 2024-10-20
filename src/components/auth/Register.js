@@ -27,6 +27,8 @@ const Register = () => {
         e.preventDefault();
     
         registerUser({ name, username, email, referalCode, password });
+
+        console.log("referecode register", referalCode)
         router.push("/login")
       };
     
@@ -84,7 +86,6 @@ const Register = () => {
             placeholder="Your invitation Code"
             value={referalCode}
             onChange={(e) => setReferalCode(e.target.value)}
-            required
           />
         </div>
 

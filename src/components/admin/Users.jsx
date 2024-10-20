@@ -35,6 +35,9 @@ const Users = ({ data }) => {
                 Email
               </th>
               <th scope="col" className="px-6 py-3">
+                Referal Code
+              </th>
+              <th scope="col" className="px-6 py-3">
                 Role
               </th>
               <th scope="col" className="px-6 py-3">
@@ -47,6 +50,7 @@ const Users = ({ data }) => {
               <tr key={user?._id} className="bg-white">
                 <td className="px-6 py-2">{user?.name}</td>
                 <td className="px-6 py-2">{user?.email}</td>
+                <td className="px-6 py-2">{user?.referalCode}</td>
                 <td className="px-6 py-2">{user?.role}</td>
                 <td className="px-6 py-2">
                   <div>

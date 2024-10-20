@@ -35,6 +35,7 @@ export const authOptions = {
           id: foundUser._id.toString(),
           email: foundUser.email,
           name: foundUser.name,
+          referalCode: foundUser.referalCode,
           role: foundUser.role,
         };
       },
@@ -47,6 +48,7 @@ export const authOptions = {
         session.user.id = token.id;
         session.user.email = token.email;
         session.user.name = token.name;
+        session.user.referalCode = token.referalCode;
         session.user.role = token.role;
       }
       return session;
@@ -57,6 +59,7 @@ export const authOptions = {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
+        token.referalCode = user.referalCode;
         token.role = user.role;
       }
       return token;

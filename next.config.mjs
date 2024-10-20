@@ -13,11 +13,11 @@
 //     }
 // };
 // https://godisgreatgas.com
-
+// "https://testgasapp-fe8069d27cfc.herokuapp.com",
 const nextConfig = {
     env: {
-        ENVIRONMENT_URL: "https://testgasapp-fe8069d27cfc.herokuapp.com",
-        NEXTAUTH_URL: "https://testgasapp-fe8069d27cfc.herokuapp.com",
+        ENVIRONMENT_URL: "http://localhost:3000",
+        NEXTAUTH_URL: "http://localhost:3000",
         DB_URL: "mongodb+srv://homiemusa:djrefuge@cluster0.fk517ja.mongodb.net/npcdatabase?retryWrites=true&w=majority", 
         CLOUND_NAME:"xycoders",
         CLOUDINARY_API_KEY: "837887428819121",

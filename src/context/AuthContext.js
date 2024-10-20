@@ -30,6 +30,9 @@ export const AuthProvider =({ children }) => {
                 }
             )
 
+            console.log("rrrrr", referalCode)
+            console.log("bbb", username)
+
             if(data?.user){
                 router.replace("/login")
             }

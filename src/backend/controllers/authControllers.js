@@ -1,13 +1,12 @@
 import User from "../model/user";
 import { uploads } from "../utils/cloudinary";
 import APIFilters from '../utils/APIFilters';
-
 import fs from 'fs'
 import bcrypt from "bcryptjs"
 
+
 export const registerUser = async(req, res) => {
     const { name, username, email, referalCode, password } = req.body;
-
     const user = await User.create({
         name,
         username,
@@ -15,6 +14,7 @@ export const registerUser = async(req, res) => {
         referalCode,
         password
     })
+    console.log("LOOK reF", user)
     res.status(201).json({
         user
     })
@@ -52,11 +52,9 @@ export const updatePassword = async (req, res, next) => {
     req.body.currentPassword,
     user.password
   );
-
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Old password is incorrect", 400));
   }
-
   user.password = req.body.newPassword;
   await user.save();
 
