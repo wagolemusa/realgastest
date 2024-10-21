@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs"
 
 
 export const registerUser = async (req, res) => {
-  const { name, username, email, referalCode, password } = req.body;
+  const { name, username, phone, referalCode, password } = req.body;
   
   try {
       // Check if a user with the same username already exists
@@ -16,7 +16,7 @@ export const registerUser = async (req, res) => {
       }
 
       // Check if a user with the same email already exists
-      const existingEmail = await User.findOne({ email });
+      const existingEmail = await User.findOne({ phone });
       if (existingEmail) {
           return res.status(400).json({ message: 'Email already exists' });
       }
@@ -25,7 +25,7 @@ export const registerUser = async (req, res) => {
       const user = await User.create({
           name,
           username,
-          email,
+          phone,
           referalCode,
           password
       });
@@ -42,7 +42,7 @@ export const registerUser = async (req, res) => {
 export const updateProfile = async (req, res) => {
     const newUserData = {
       name: req.body.name,
-      email: req.body.email,
+      phone: req.body.phone,
     };
     if (req.files.length > 0) {
       const uploader = async (path) => await uploads(path, "npc");

@@ -8,12 +8,14 @@ import { toast } from "react-toastify";
 
 const Register = () => {
   const router = useRouter();
-  const { error, registerUser, clearErrors } = useContext(AuthContext);
+  const {  registerUser, clearErrors } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [referalCode, setReferalCode] = useState("");
   const [password, setPassword] = useState("");
+
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (error) {
@@ -22,10 +24,21 @@ const Register = () => {
     }
   }, [error, clearErrors]);
 
+
+  const isValidPhoneNumber = (phone) => {
+    const callPhone = phone.length === 12;
+    return callPhone;
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    
-    const result = await registerUser({ name, username, email, referalCode, password });
+
+    const result = await registerUser({ name, username, phone, referalCode, password });
+
+    if(!isValidPhoneNumber(phone)){
+      setError("Phone Number must start with 2567xxxxxxx")
+      return
+    }
 
     if (result.error) {
         // Display error message if there's an issue (e.g., username or email already exists)
@@ -70,13 +83,13 @@ const Register = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block mb-1"> Email </label>
+          <label className="block mb-1"> Phpne Number </label>
           <input
             className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
-            type="email"
-            placeholder="Type your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="number"
+            placeholder="256754188938"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             required
           />
         </div>

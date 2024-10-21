@@ -9,11 +9,7 @@ const Login = () => {
     const [error, setError] = useState("");
     const { data: session, status: sessionStatus } = useSession();
 
-    const isValidEmail = (email) => {
-        const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-        return emailRegex.test(email);
-    };
-
+ 
     useEffect(() => {
         if (sessionStatus === "authenticated") {
             router.replace("/");
@@ -22,14 +18,10 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const email = e.target[0].value;
+        const username = e.target[0].value;
         const password = e.target[1].value;
 
-        if (!isValidEmail(email)) {
-            setError("Email is invalid");
-            return;
-        }
-
+    
         if (!password || password.length < 8) {
             setError("Password is invalid");
             return;
@@ -37,12 +29,12 @@ const Login = () => {
 
         const res = await signIn("credentials", {
             redirect: false,
-            email,
+            username,
             password,
         });
 
         if (res?.error) {
-            setError("Invalid email or password");
+            setError("Invalid username or password");
         } else {
             // Refresh the page to reflect the new user state
             window.location.reload();
@@ -62,11 +54,11 @@ const Login = () => {
                         <h2 className="mb-5 text-2xl font-semibold">Login</h2>
 
                         <div className="mb-4">
-                            <label className="block mb-1">Email</label>
+                            <label className="block mb-1">Username</label>
                             <input
                                 type="text"
                                 className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
-                                placeholder="Type your email"
+                                placeholder="Type your username"
                                 required
                             />
                         </div>

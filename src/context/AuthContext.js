@@ -16,14 +16,14 @@ export const AuthProvider =({ children }) => {
     const router = useRouter;
     
     // Register user
-    const registerUser = async ({ name, username, email, referalCode, password }) => {
+    const registerUser = async ({ name, username, phone, referalCode, password }) => {
       try {
           const { data } = await axios.post(
               `${process.env.ENVIRONMENT_URL}/api/auth/register`,
               {
                   name,
                   username,
-                  email,
+                  phone,
                   referalCode,
                   password
               }
