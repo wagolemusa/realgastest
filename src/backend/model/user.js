@@ -10,10 +10,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter your username'],
     },
-    email: {
+    phone: {
         type: String,
-        required: [true, 'Please enter your email'],
-        unique: true,
+        required: true,
+    },
+    referalCode: {
+        type: String,
     },
     password: {
         type: String,
@@ -28,9 +30,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'user',
     },
-    referralCode: {
-        type: String,
-    },
+ 
     createdAt: {
         type: Date,
         default: Date.now,

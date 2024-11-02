@@ -13,7 +13,7 @@
 //     }
 // };
 // https://godisgreatgas.com
-
+// "https://testgasapp-fe8069d27cfc.herokuapp.com",
 const nextConfig = {
     env: {
         ENVIRONMENT_URL: "https://testgasapp-fe8069d27cfc.herokuapp.com",

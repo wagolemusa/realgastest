@@ -78,10 +78,11 @@ export const checkoutSession = async (req, res) => {
       amount,
       totalAmount,
       ...req.body,
-      
     })
 
     let refCode = await Referal.findOne({referralcode});
+
+    console.log("xxxxxxx", refCode)
    
     if(refCode){
       await Referal.findOneAndUpdate(

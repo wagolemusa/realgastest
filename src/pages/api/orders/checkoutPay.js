@@ -1,5 +1,6 @@
 
 import  Order from '../../../backend/model/order'
+import Referal from '../../../backend/model/referal';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../lib/authOptions';
 
@@ -16,7 +17,7 @@ export default async function handler(req, res) {
       const { amount, totalAmount, user, orderItems, shippingInfo, referralcode, points } = req.body;
 
       // Create a new order
-      const order = new Order({
+      const order = await Order.create({
         amount,
         totalAmount,
         user: session.user.id,
@@ -27,8 +28,23 @@ export default async function handler(req, res) {
         orderStatus: 'Processing',
       });
 
-      // Save the order to the database
-      await order.save();
+      let refCode = await Referal.findOne({referralcode});
+
+      if(refCode){
+        await Referal.findOneAndUpdate(
+          { referralcode },
+          { $inc: { points: 2000 } }
+        )
+        
+      }else{
+        await Referal.create({
+          referralcode,
+          points: 2000
+        })
+    
+      }
+
+      
 
       // Respond with success
       res.status(200).json({ message: 'Order created successfully', order });

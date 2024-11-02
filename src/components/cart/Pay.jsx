@@ -13,8 +13,6 @@ const Pay = ({ session, addresses }) => {
   const { cart, clearCart } = useContext(CartContext);
   const { user } = useContext(AuthContext);
 
-
-
   const [shippingInfo, setShippinInfo] = useState("");
 
   const setShippingAddress = (address) => {
@@ -26,8 +24,12 @@ const Pay = ({ session, addresses }) => {
     0
   );
 
+  console.log("ssssssss", session)
+
   const totalAmount = Number(amountWithoutTax);
   const referralcode = session?.user?.referalCode;
+
+  console.log("cooood", referralcode)
 
   const submitHandlerpay = async (e) => {
     e.preventDefault();
@@ -45,6 +47,7 @@ const Pay = ({ session, addresses }) => {
         }
       );
 
+      console.log("phone", shippingInfo.phoneNo)
       console.log("datasss",{
         amount: amountWithoutTax,
         totalAmount,

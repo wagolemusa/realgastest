@@ -10,14 +10,14 @@ const UpdateProfile = () => {
     useContext(AuthContext);
 
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("/images/default.png");
 
   useEffect(() => {
     if (user) {
       setName(user.name);
-      setEmail(user.email);
+      setPhone(user.phone);
     }
 
     if (error) {
@@ -31,7 +31,7 @@ const UpdateProfile = () => {
 
     const formData = new FormData();
     formData.set("name", name);
-    formData.set("email", email);
+    formData.set("phone", phone);
     formData.set("image", avatar);
 
     updateProfile(formData);
@@ -72,14 +72,14 @@ const UpdateProfile = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block mb-1"> Email </label>
+            <label className="block mb-1"> Phone </label>
             <input
               className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
-              type="text"
-              placeholder="Type your email"
+              type="number"
+              placeholder="2567245858585"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
           </div>
 
