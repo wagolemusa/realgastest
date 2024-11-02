@@ -81,14 +81,10 @@ const Login = () => {
                             Login
                         </button>
 
-                        <hr className="mt-4" />
-
-                        <p className="text-center mt-5">
-                            Don&apos;t have an account?{" "}
-                            <Link href="/register" className="text-blue-500">
-                                Register
-                            </Link>
-                        </p>
+                        <hr className="mt-2" />
+                        <Link href="/register" className="registerbtn my-2 px-4 py-2 w-full text-center rounded-md">
+                            Create Account
+                        </Link>
                     </form>
                 </div>
             </div>

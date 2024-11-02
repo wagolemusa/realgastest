@@ -99,7 +99,7 @@ const Register = () => {
           <input
             className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
             type="text"
-            placeholder="Your invitation code"
+            placeholder="Your invitation code or username"
             value={referalCode}
             onChange={(e) => setReferalCode(e.target.value)}
           />
@@ -125,14 +125,10 @@ const Register = () => {
           Register
         </button>
 
-        <hr className="mt-4" />
-
-        <p className="text-center mt-5">
-          Already have an account?
-          <Link href="/login" className="text-blue-500">
-            Sign in
+        <hr className="mt-2" />
+          <Link href="/login" className="registerbtn my-2 px-4 py-2 w-full text-center rounded-md">
+              Login
           </Link>
-        </p>
       </form>
     </div>
   );
