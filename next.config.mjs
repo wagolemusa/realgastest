@@ -25,6 +25,8 @@ const nextConfig = {
         NEXTAUTH_SECRET: "refugewisemusawagole456565543",
         STRIPE_PUBLIC_KEY: 'pk_test_51AXQQfDtSmo7ipf18rtyXOfKlXbzQBjm3hq7TQJIFFIcBbLrufa3chFTWAt17h9ck3dZX3RJagPqYxvOmRpjTIjx00P80JJDxI',
         STRIPE_PRIVATE_KEY: 'sk_test_51AXQQfDtSmo7ipf134DFxpL3fH75bb9QY8IjxvCXgeYPDCxZfqMARGQxUmSZXV1eQy3cuEnA2ljw7hcrXiYFlVVm00YiGlvmSP',
+        AFRICASTALKING_API_KEY: 'atsk_33da5082f5a46f33de2359045ff47cccce68db3d88141dea46ba25662821e49951d3675e',
+        AFRICASTALKING_USERNAME:'refuge'
     },
     images: {
         domains: ["res.cloudinary.com"],
