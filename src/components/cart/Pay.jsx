@@ -28,8 +28,10 @@ const Pay = ({ session, addresses }) => {
 
   const totalAmount = Number(amountWithoutTax);
   const referralcode = session?.user?.referalCode;
+  const phonenum = session?.user?.phone;
+  const names = session?.user?.name;
+  const usernamecode = session?.user?.username;
 
-  console.log("cooood", referralcode)
 
   const submitHandlerpay = async (e) => {
     e.preventDefault();
@@ -46,8 +48,7 @@ const Pay = ({ session, addresses }) => {
           points: 2000,
         }
       );
-
-      console.log("phone", shippingInfo.phoneNo)
+     
       console.log("datasss",{
         amount: amountWithoutTax,
         totalAmount,
@@ -59,18 +60,26 @@ const Pay = ({ session, addresses }) => {
       })
 
       clearCart();
-
+  
       if (data) {
-        router.push("/me/orders");
+        if (data) {
+
+          // Send SMS to client phone via the API route after successful payment
+          const message = `Thanks ${names} for buying from God is Great Gas Solution. Now your points have increased,refer people and get points each time they refill or buy your referral code is ${usernamecode}.`;
+          const to = "+" + phonenum;
+          await axios.post('/api/sms', { to, message });
+          // Redirect to orders page after SMS is sent
+          router.push("/me/orders");
+        }
+        
       }
+
     } catch (error) {
       console.error("Error during checkout:", error);
       // Handle the error, show a message to the user, or redirect to an error page.
     }
   };
 
-
- 
 
   return (
     <div>
