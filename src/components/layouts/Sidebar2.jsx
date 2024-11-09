@@ -63,6 +63,13 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                     </li>
 
                     <li className='sidebar-list-item'>
+                        <BsFillArchiveFill className='icon' />
+                        <a href="/admin/customer-sms">
+                            Message
+                        </a>
+                    </li>
+
+                    <li className='sidebar-list-item'>
                         <BsPeopleFill className='icon' />
                         <a href="/admin/branch">
                             Branches

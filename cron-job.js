@@ -10,6 +10,7 @@ async function sendMessages() {
     
     // Use 'for...of' to handle asynchronous actions properly
     for (const customer of customers) {
+
       if (customer.numberOfDays <= 1) {
         console.log(`Sending message to customer ${customer.phone}`);
 
@@ -27,6 +28,8 @@ async function sendMessages() {
         }
       }
     }
+
+    
   } catch (error) {
     console.error("Error fetching customers:", error);
   }

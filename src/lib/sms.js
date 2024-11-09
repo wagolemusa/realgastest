@@ -3,10 +3,9 @@ import Africastalking from 'africastalking';
 
 // Define your credentials
 const credentials = {
-    apiKey: 'atsk_ce057c14781f8df2d36b35786fa4dfd289427c2e581351fb3f156cd56a3eb0b3b0023322',
+    apiKey: 'atsk_33da5082f5a46f33de2359045ff47cccce68db3d88141dea46ba25662821e49951d3675e',
     username: 'refuge',
 };
-
 // Initialize the Africastalking service
 const africastalking = Africastalking(credentials);
 
