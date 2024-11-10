@@ -1,6 +1,6 @@
 import Customer from "../model/customer";
 import APIFilters from '../utils/APIFilters';
-
+import phoneSms from '../../lib/sms'
 
 // create customer
 export const newCustomer = async(req, res) => {
@@ -64,6 +64,34 @@ export const updateCustomer = async(req, res, next) => {
     })
 };
 
+
+export const sendSms = async (req, res) => {
+    try {
+        // Fetch all customer phone numbers
+        let customers = await Customer.find().select("phone");
+
+        // Get the message from the request body
+        let { message } = req.body;
+
+        // Loop through each customer and send SMS
+        for (const custo of customers) {
+            let to = "+" + 256 + custo.phone; // Format the phone number with the country code
+            
+            console.log("phonee", to)
+
+            // Send the SMS asynchronously for each customer
+            await phoneSms(to, message); // Wait for each SMS to be sent before continuing
+        }
+
+        // Send a success response after all SMS have been sent
+        res.status(200).json({ success: true, message: "SMS sent to all customers" });
+
+    } catch (error) {
+        console.error("Error sending SMS:", error);
+        // Send an error response in case of failure
+        res.status(500).json({ success: false, message: "Failed to send SMS", error: error.message });
+    }
+};
 
 
 // Delete images associated with the product
