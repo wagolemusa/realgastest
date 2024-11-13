@@ -1222,6 +1222,61 @@ th{
   font-weight: 600;
 }
 
+.cardx1 {
+  width: 250px;
+  background-color: #1C64F2;
+  font-weight: 700;
+  height: 160px;
+}
+
+.cardx2 {
+  width: 250px;
+  background-color: #F98080;
+  color: #ffffff;
+  font-weight: 700;
+  height: 160px;
+
+}
+.cardx3 {
+  width: 250px;
+  width: 250px;
+  background-color: #9061F9;
+  color: #ffffff;
+  font-weight: 700;
+  height: 160px;
+}
+
+
+.card3 {
+  width: 250px;
+  /* padding-left: 35px; */
+
+}
+.card3x1{
+  background-color:#FFB300;
+  width: 350px;
+  color: #ffffff;
+  font-weight: 700;
+  padding-left: 30px;
+}
+
+.card3x2{
+  background-color:#54B4D3;
+  width: 350px;
+  color: #ffffff;
+  font-weight: 700;
+  padding-left: 30px;
+}
+
+.card3x3{
+  background-color:#9FA6B2;
+  width: 350px;
+  color: #ffffff;
+  font-weight: 700;
+  padding-left: 30px;
+}
+
+
 @media screen and (max-width: 992px) {
   .grid-container {
     grid-template-columns: 1fr;
