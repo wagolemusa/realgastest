@@ -52,7 +52,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: 'Processing',
     },
-    createAt: {
+    createdAt: {
         type: Date,
         default: Date.now,
     },

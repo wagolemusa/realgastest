@@ -6,18 +6,16 @@ import {
   
   isAuthenticatedUser,
 } from "../../../../backend/middlewares/auth";
-import { getCountSales, getSell, newSell } from '../../../../backend/controllers/sellController';
+import {  getCountOrders } from '../../../../backend/controllers/orderController';
 
 
 const router = createRouter({ 
     onError,
  });
- 
+
 dbConnect();
 
 
-router.use(isAuthenticatedUser).post(newSell);
-router.use(isAuthenticatedUser).get(getSell)
-
+router.get(getCountOrders)
 
 export default router.handler();

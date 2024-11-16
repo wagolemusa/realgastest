@@ -18,27 +18,18 @@ const Profile = ({ addresses }) => {
 
             <a href="#" class="cardx1 block max-w-sm p-3 border-gray-200 rounded-lg shadow text-center hover:bg-gray-100 text-white dark:hover:bg-blue-700">
 
-              <h2 class="font-normal  text-white">ORDERS</h2>
+              <h2 class="font-normal  text-white">ONLINE ORDERS</h2>
               <h3>59</h3>
             </a>
           </div>
 
           <div className="col-md-3">
             <a href="#" class="card3 text-center block max-w-sm p-1 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-              <h2 class="font-normal text-gray-700 dark:text-gray-400">SALES</h2>
+              <h2 class="font-normal text-gray-700 dark:text-gray-400">SHOPS <br/>SALES</h2>
               {/* <h2 class="text-lg font-semibold text-gray-900">Top students:</h2> */}
 
-              <a href="#" class="max-w-md space-y-2 text-gray-500 list-decimal list-inside dark:text-gray-400">
-                <p>
-                  <span class="font-semibold  text-gray-500">3 kgs</span> <span class="font-semibold text-blue-700">4</span>
-                </p>
-                <p>
-                  <span class="font-semibold text-gray-500">6 kgs</span> <span class="font-semibold  text-blue-700">20</span>
-                </p>
-                <p>
-                  <span class="font-semibold text-gray-500 ">12 kgs</span> <span class="font-semibold text-blue-700">12</span>
-                </p>
-              </a >
+              <h2>30</h2>
+
             </a>
 
           </div>
