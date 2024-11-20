@@ -118,6 +118,12 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                         </a>
                     </li>
                     <li className='sidebar-list-item'>
+                        <AiOutlineStock className='icon' />
+                        <a href="/admin/resaler">
+                            Resalers
+                        </a>
+                    </li>
+                    <li className='sidebar-list-item'>
                         <FaCode className='icon' />
                         <a href="/admin/promocode">
                             Promo code

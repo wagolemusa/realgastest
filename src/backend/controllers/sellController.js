@@ -1,14 +1,48 @@
 import Sell from '../model/sell';
 import { startOfDay, endOfDay } from 'date-fns';
+import Sockcylinder from '../model/sockcylinder';
 
 // create sell gas
 export const newSell = async(req, res) => {
-    const sell_gas = await Sell.create(req.body);
-    res.status(201).json({
-        sell_gas
-    })
-}
 
+    try{
+        const { branch, cylinderSize, cylinderType, category, amount,
+            numberOfDays, paidamount, balance, paymantstatus, paymentmethod,
+            datedata, time, customerName, phone, condition, 
+            sealTaken, sealReplaced } = req.body;
+
+            let takenSeal = await Sockcylinder.findOne({ sealTaken });
+   
+            let sealed = new Sell({
+               branch,
+               cylinderSize,
+               cylinderType,
+               category,
+               amount,
+               numberOfDays,
+               paidamount,
+               balance,
+               paymantstatus,
+               paymentmethod,
+               datedata,
+               time,
+               customerName,
+               phone,
+               condition,
+               sealTaken,
+               sealReplaced
+            })
+            await sealed.save()
+
+
+            return res.status(201).json({
+                sealed
+            })
+
+    } catch(error){
+        console.log(error)
+    }
+}
 
 
 // Query Sales Data

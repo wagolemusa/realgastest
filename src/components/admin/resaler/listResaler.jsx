@@ -1,48 +1,30 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, Suspense} from "react";
 import Link from "next/link";
 import CustromPagination from "../../layouts/CustromPagination";
 import { toast } from "react-toastify";
 import '../../layouts/styles.css'
 import axios from "axios";
-import { useRouter } from "next/navigation";
 
 
-const ListSales = () => {
+const ListResaler = ({ data }) => {
 
-    const [data, setData] = useState(null);
-    const [error, setError] = useState(null);
-    const router = useRouter();
-
-    // const {deleteCompany } = useContext(CompanyContext)
-
-    useEffect(() => {
-        async function fetchData(){
-            try{
-                const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/sell`);
-                setData(response.data);
-            } catch(error){
-                setError('Failed to fetch data');
-                console.error('Error fetching data:', error);
-            }
-        }
-        fetchData();
-    }, []);
+    const [error, setError] = useState()
 
 
     // Delete Company Data
-    const deleteSales = async (id) => {
+    const deleteCustomer = async (id) => {
         // Utility function to validate ObjectId
         const isValidObjectId = (id) => /^[a-f\d]{24}$/i.test(id);
     
         if (!isValidObjectId(id)) {
             setError("Invalid company ID format");
-            return;
+            return; 
         }
 
         try {
-            const response = await axios.delete(`${process.env.ENVIRONMENT_URL}/api/admin/sell/${id}`);
+            const response = await axios.delete(`${process.env.ENVIRONMENT_URL}/api/admin/resaler/${id}`);
             
             if (response.data?.success) {
                 router.replace(`/admin/customer`);
@@ -60,40 +42,34 @@ const ListSales = () => {
 
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
                 <h1 className="text-3xl my-5 ml-4 font-bold">
-                <Link href="/admin/sell/new" className="btn btn-primary">Create Sales</Link>
+                    ({ data?.productsCount}) <Link href="/admin/resaler/new" className="btn btn-primary">Create Resaler</Link>
 
                 </h1>
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                     <tr>
-                    <th scope="col" className="px-6 py-3">
-                            Date
+                        <th scope="col" className="px-6 py-3">
+                            Business Name
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Category
+                            Price
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Bra-Name
+                            Phone
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Cyl-D-Size
+                            whatsup Number
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Cyl-D-Type
+                            District
+                        </th>
+                    
+                        <th scope="col" className="px-6 py-3">
+                            Town
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Amount
+                            Code
                         </th>
-                        <th scope="col" className="px-6 py-3">
-                            Paid Amount
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Balance
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Pay Status
-                        </th>
-                     
                         <th scope="col" className="px-6 py-3">
                             Actions
                         </th>
@@ -101,37 +77,30 @@ const ListSales = () => {
                 </thead>
                 <tbody>
              
-                    {data?.sell?.map(( sales ) => (
+                    {data?.pointsofsales?.map(( resale ) => (
                         
-                        <tr key={sales._id} className="bg-white">
-                        <td className="px-6 py-2">{sales?.datedata}</td>
-                        <td className="px-6 py-2">{sales?.category}</td>
-                        <td className="px-6 py-2">{sales?.branch}</td>
-                        <td className="px-6 py-2">{sales?.cylinderSize}</td>
-                        <td className="px-6 py-2">{sales?.cylinderType}</td>
-                        <td className="px-6 py-2">{sales?.amount}</td>
-                        <td className="px-6 py-2">{sales?.paidamount}</td>
-                        <td className="px-6 py-2">{sales?.balance}</td>
-                        <td className="px-6 py-2">{sales?.paymantstatus}</td>
+                        <tr key={resale._id} className="bg-white">
+                        <td className="px-6 py-2">{resale?.businessname}</td>
+                        <td className="px-6 py-2">{resale?.price}</td>
+                        <td className="px-6 py-2">{resale?.phone}</td>
+                        <td className="px-6 py-2">{resale?.whatsup}</td>
+                        <td className="px-6 py-2">{resale?.district}</td>
+                        <td className="px-6 py-2">{resale?.town}</td>
+                        <td className="px-6 py-2">{resale?.code}</td>
                         <td className="px-6 py-2">
                            
                             <div>
-                            <Link
-                                    href={`/admin/sell/new/viewdata/${sales?._id}`}
-                                    className="px-2 py-2 inline-block text-green-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
-                                >
-                                    {/* <i className="fa fa-image" aria-hidden="true"></i> */}
-                                    View
-                                </Link>
+                             
+
                                 <Link
-                                    href={`/admin/sell/${sales?._id}`}
+                                    href={`/admin/customer/${resale?._id}`}
                                     className="px-2 py-2 inline-block text-yellow-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                                 >
                                     {/* <i className="fa fa-pencil" aria-hidden="true"></i> */}
                                     Edit
                                 </Link>
                                 <a className="px-2 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                                    onClick={() => deleteSales(sales?._id)}
+                                    onClick={() => deleteCustomer(resale?._id)}
                                 >
                                     {/* <i className="fa fa-trash" aria-hidden="true"></i> */}
                                     Delete
@@ -158,6 +127,4 @@ const ListSales = () => {
     );
 };
 
-export default ListSales;
-
-
+export default ListResaler;
