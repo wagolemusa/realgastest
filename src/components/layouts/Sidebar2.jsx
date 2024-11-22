@@ -119,6 +119,12 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                     </li>
                     <li className='sidebar-list-item'>
                         <AiOutlineStock className='icon' />
+                        <a href="/admin/sealed">
+                            Create Cylinders
+                        </a>
+                    </li>
+                    <li className='sidebar-list-item'>
+                        <AiOutlineStock className='icon' />
                         <a href="/admin/resaler">
                             Resalers
                         </a>

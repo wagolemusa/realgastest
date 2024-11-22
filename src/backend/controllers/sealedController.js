@@ -16,7 +16,7 @@ export const newSealedCylinder = async(req, res, next) => {
 };
 
 
-// Query Gas bought
+// Query sealed cylinders
 export const getSealedCylinder = async(req, res) => {
     const cylinder = await Stockcylinder.find();
     if(!cylinder){

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const stockcylinderSchema = new mongoose.Schema({
+const updatedsealSchema = new mongoose.Schema({
     cylinderSize: {
         type: String,
         required: true
@@ -13,6 +13,14 @@ const stockcylinderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    customerName: {
+        type: String,
+        required: false
+    },
+    phone: {
+        type: String,
+        required: false
+    },
     sealnumber: {
         type: String,
         required: false
@@ -24,16 +32,8 @@ const stockcylinderSchema = new mongoose.Schema({
     statusStock:{
         type: String,
         required: false
-    },
-    sealTaken: {
-        type: String,
-        required: false
-    },
-    sealReplaced: {
-        type: String,
-        required: false
     }
 }, {timestamps: true})
 
-export default mongoose.models.Stockcylinder || 
-    mongoose.model("Stockcylinder", stockcylinderSchema)
+export default mongoose.models.Updatedseal || 
+    mongoose.model("Updatedseal", updatedsealSchema)

@@ -293,7 +293,7 @@ useEffect(() => {
             name="phone"
             value={phone}
             onChange={onChange}
-            required
+            
           />
         </div>
 
@@ -318,7 +318,7 @@ useEffect(() => {
             name="sealTaken"
             value={sealTaken}
             onChange={onChange}
-            required
+          
           />
         </div>
         <div className="mb-2 py-2">
@@ -330,7 +330,6 @@ useEffect(() => {
             name="sealReplaced"
             value={sealReplaced}
             onChange={onChange}
-            required
           />
         </div>
         <button
