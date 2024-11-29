@@ -21,18 +21,7 @@ const stockcylinderSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    statusStock:{
-        type: String,
-        required: false
-    },
-    sealTaken: {
-        type: String,
-        required: false
-    },
-    sealReplaced: {
-        type: String,
-        required: false
-    }
+
 }, {timestamps: true})
 
 export default mongoose.models.Stockcylinder || 

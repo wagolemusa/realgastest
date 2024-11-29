@@ -1,11 +1,11 @@
 "use client";
+import Link from "next/link";
 import CustomerContext from "../../../context/CustomerContext";
 import React, { useEffect, useContext, useState, Suspense } from "react";
 import { toast } from "react-toastify";
 
-const Getcustomers = ({ data, id }) => {
+const Getcustomers = ({ data }) => {
 
-    const { updateCustomer, updated, setUpdated, error } = useContext(CustomerContext);
 
     const [customer, setCustomer] = useState({
         name: data?.name,
@@ -20,21 +20,10 @@ const Getcustomers = ({ data, id }) => {
 
     });
 
-    useEffect(() => {
-        if (updated) {
-            toast.success('Customer Updated')
-            setUpdated(false)
-        }
-        if (error) {
-            toast.error(error)
-            clearErrors()
-        }
-    }, [error, updated, setUpdated])
-
+   
     const {
         name,
         phone,
-        email,
         cylinderType,
         cylinderSize,
         numberOfDays,
@@ -42,36 +31,157 @@ const Getcustomers = ({ data, id }) => {
         location,
         mapurl } = customer;
 
-    const onChange = (e) => {
-        setCustomer({ ...customer, [e.target.name]: e.target.value });
-    };
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-        updateCustomer(customer, data?._id);
-    };
-
 
     return (
-        <Suspense
-            style={{ maxWidth: "700px" }}
+        <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
+        <h1 className="text-3xl my-5 ml-4 font-bold">
+            <Link href="/admin/customer" className="btn btn-primary">Back-To-Customer</Link></h1>
+        <section
+            style={{ maxWidth: "1000px" }}
             className="main2 mt-10 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg">
-            <a href="/admin/customer">Back</a>
+            
+            <div className="row">
+                <div className="col-md-6">
+                <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                            <li class="pb-3 sm:pb-4">
+                                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                                    <div class="flex-shrink-0">
+                                    </div>
+                                    <div class="flex-1 min-w-0">
 
-            <ul class="list-group list-group-light">
-                <li class="list-group-item"><span>Customer Name</span>&nbsp;&nbsp;&nbsp;<br/>{name}</li>
-                <li class="list-group-item"><span>Phone</span>&nbsp;&nbsp;&nbsp;<br/>{phone}</li>
-                <li class="list-group-item"><span>Cylinder Type</span>&nbsp;&nbsp;&nbsp;<br/>{cylinderType}</li>
-                <li class="list-group-item"><span>Cylinder Size</span>&nbsp;&nbsp;&nbsp;<br/>{cylinderSize}</li>
-                <li class="list-group-item"><span>Days</span>&nbsp;&nbsp;&nbsp;<br/>{numberOfDays}</li>
-                <li class="list-group-item"><span>Location</span>&nbsp;&nbsp;&nbsp;<br/>{location}</li>
-                <li class="list-group-item"><span>Map Url</span>&nbsp;&nbsp;&nbsp;<br/>{mapurl}</li>
-                <li class="list-group-item"><span>Described Location</span>&nbsp;&nbsp;&nbsp;<br/>{describeLocation}</li>
+                                        <p class="text-sm text-gray-600 truncate dark:text-gray-600">
+                                            Customer Names
+                                        </p>
+                                    </div>
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                                        {name}
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="pb-3 sm:pb-4">
+                                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                                    <div class="flex-shrink-0">
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+
+                                        <p class="text-sm text-gray-600 truncate dark:text-gray-600">
+                                            Customer Phone
+                                        </p>
+                                    </div>
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                                        {phone}
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="pb-3 sm:pb-4">
+                                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                                    <div class="flex-shrink-0">
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+
+                                        <p class="text-sm text-gray-600 truncate dark:text-gray-600">
+                                            Cylinder Size
+                                        </p>
+                                    </div>
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                                        {cylinderSize}
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="pb-3 sm:pb-4">
+                                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                                    <div class="flex-shrink-0">
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+
+                                        <p class="text-sm text-gray-600 truncate dark:text-gray-600">
+                                            Cylinder Brand
+                                        </p>
+                                    </div>
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                                        {cylinderType}
+                                    </div>
+                                </div>
+                            </li>
 
 
-            </ul>
+                    </ul>
+
+                </div>
+
+                <div className="col-md-6">
+                <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                            <li class="pb-3 sm:pb-4">
+                                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                                    <div class="flex-shrink-0">
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+
+                                        <p class="text-sm text-gray-600 truncate dark:text-gray-600">
+                                        Number of Days Gas Take
+                                        </p>
+                                    </div>
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                                        {numberOfDays}
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="pb-3 sm:pb-4">
+                                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                                    <div class="flex-shrink-0">
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+
+                                        <p class="text-sm text-gray-600 truncate dark:text-gray-600">
+                                            Location
+                                        </p>
+                                    </div>
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                                        {location}
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="pb-3 sm:pb-4">
+                                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                                    <div class="flex-shrink-0">
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+
+                                        <p class="text-sm text-gray-600 truncate dark:text-gray-600">
+                                        Described Location
+                                        </p>
+                                    </div>
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                                        {describeLocation}
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="pb-3 sm:pb-4">
+                                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                                    <div class="flex-shrink-0">
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+
+                                        <p class="text-sm text-gray-600 truncate dark:text-gray-600">
+                                            Map URL
+                                        </p>
+                                    </div>
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                                        {mapurl}
+                                    </div>
+                                </div>
+                            </li>
+                    </ul>
+
+                </div>
+            </div>
+
+        </section>
         </Suspense>
     );
 };
 
 export default Getcustomers;
+
+ 

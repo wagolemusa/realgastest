@@ -236,7 +236,7 @@ useEffect(() => {
             value={paymentmethod}
             onChange={onChange}
         >
-            <option selected>Cylinders Conditions</option>
+            <option selected>Payment Methods</option>
             <option>cash</option>
             <option>momo</option>
             <option>airtel</option>

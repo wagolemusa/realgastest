@@ -34,7 +34,7 @@ export  const getCustomers = async(req, res, next) =>{
 }
 
 
-// get customers
+// get customers by Id
 export const getCustomerById = async(req, res) =>{
     const customer = await Customer.findById(req.query.id);
     if(!customer){
