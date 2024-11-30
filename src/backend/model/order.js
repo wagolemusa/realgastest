@@ -52,11 +52,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: 'Processing',
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-});
+},  {timestamps: true});
 
 // This ensures that the model is only created once
 const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);

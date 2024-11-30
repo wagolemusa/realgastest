@@ -55,7 +55,7 @@ const Orders = ({ orders }) => {
                   {orders?.orders?.map((order) =>(
                     
                     <tr key={order._id} className="bg-white">
-                    <td className="px-6 py-2">{formatDate(order?.createAt)}</td>
+                    <td className="px-6 py-2">{formatDate(order?.createdAt)}</td>
                     <td className="px-6 py-2">UGX {order?.totalAmount}</td>
                     <td className="px-6 py-2">{order?.orderStatus}</td>
                     <td className="px-6 py-2">

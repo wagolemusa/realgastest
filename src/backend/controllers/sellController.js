@@ -2,6 +2,7 @@ import Sell from '../model/sell';
 import { startOfDay, endOfDay } from 'date-fns';
 import Sockcylinder from '../model/sockcylinder';
 import Updateseal from '../model/updateseal';
+import APIFilters from "../utils/APIFilters"
 
 // create sell gas
 export const newSell = async(req, res) => {
@@ -114,6 +115,60 @@ export const getCountSales = async(req, res) =>{
     })
   }
   
+
+
+// Get-Count-Orders-and-Sum Revenue
+export const getCountSalesAndSumRevenue = async (req, res) => {
+    try {
+      const resPerPage = 100;
+      // Get today's date range using date-fns
+      const startOfToday = startOfDay(new Date());
+      const endOfToday = endOfDay(new Date());
+  
+      // Perform aggregation to calculate total revenue and count orders
+      const summary = await Sell.aggregate([
+        {
+          $match: {
+            createdAt: { $gte: startOfToday, $lte: endOfToday }
+          },
+        },
+        {
+          $group: {
+            _id: null, // Group all matching documents
+            totalRevenue: { $sum: '$amount' }, // Sum the totalPrice field
+            totalOrders: { $sum: 1 }, // Count the number of orders
+          },
+        },
+      ]);
+      // Debugging logs
+      console.log('Summary:', summary);
+      // Extract revenue and orders count from aggregation result
+      const totalRevenue = summary.length > 0 ? summary[0].totalRevenue : 0;
+      const totalOrders = summary.length > 0 ? summary[0].totalOrders : 0;
+  
+      // Fetch paginated orders for detailed view
+      const apiFilters = new APIFilters(Sell.find({
+        createdAt: { $gte: startOfToday, $lte: endOfToday },
+        orderStatus: 'Shipped',
+      }), req.query).pagination(resPerPage);
+  
+      const orders = await apiFilters.query.find()
+        .populate('shippingInfo user')
+        .sort({ createdAt: -1 });
+      // Debugging logs
+      console.log('Orders:', orders);
+      // Return the response
+      res.status(200).json({
+        ordersCount: totalOrders,
+        totalRevenue,
+      });
+    } catch (err) {
+      console.error('Error fetching orders:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+  
+
 
 // Sum all today's sales
 export const getsumTodaySalesOnShop = async (req, res) => {
