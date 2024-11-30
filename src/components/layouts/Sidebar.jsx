@@ -14,7 +14,7 @@ const Sidebar = () => {
 
   return (
     <aside className="md:w-1/3 lg:w-1/4 px-4">
-      <ul className="sidebar">
+      <ul className="sidebar1">
 
         {user?.role === "admin" && (
             <>

@@ -21,8 +21,28 @@ const sellSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    datedata: {
+    numberOfDays: {
         type: String,
+        required: true
+    },
+    paidamount: {
+        type: Number,
+        required: false
+    },
+    balance: {
+        type: Number,
+        required: false
+    },
+    paymantstatus: {
+        type: String,
+        required: false
+    },
+    paymentmethod: {
+        type: String,
+        required: false
+    },
+    datedata: {
+        type: String, 
         required: true
     },
     time: {
@@ -37,10 +57,19 @@ const sellSchema = mongoose.Schema({
         type: String,
         required: false
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
+    condition: {
+        type: String,
+        required: true
+    }, 
+    sealTaken: {
+        type: String,
+        required: false
+    },
+    sealReplaced: {
+        type: String,
+        required: false
     }
-    
-})
-export default mongoose.models.Sell || mongoose.model("Sell",  sellSchema)
+}, {timestamps: true})
+
+export default mongoose.models.Sell || 
+mongoose.model("Sell",  sellSchema)

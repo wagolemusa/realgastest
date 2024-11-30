@@ -6,13 +6,13 @@ import {
   
   isAuthenticatedUser,
 } from "../../../../backend/middlewares/auth";
-import { getSell, newSell } from '../../../../backend/controllers/sellController';
+import { getCountSales, getSell, newSell } from '../../../../backend/controllers/sellController';
 
 
 const router = createRouter({ 
     onError,
  });
-
+ 
 dbConnect();
 
 

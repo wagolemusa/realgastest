@@ -45,10 +45,18 @@ useEffect(() => {
     cylinderType: "",
     category: "",
     amount: "",
+    numberOfDays:"",
+    paidamount: "",
+    balance: "",
+    paymantstatus: "",
+    paymentmethod:"",
     datedata: "",
     time: "",
     customerName: "",
     phone: "",
+    condition: "",
+    sealTaken: "",
+    sealReplaced: ""
 
   });
 
@@ -58,10 +66,18 @@ useEffect(() => {
     cylinderSize,
     category,
     amount,
+    numberOfDays,
+    paidamount,
+    balance,
+    paymantstatus,
+    paymentmethod,
     time,
     datedata,
     customerName, 
-    phone,} = sell;
+    phone,
+    condition,
+    sealTaken,
+    sealReplaced,} = sell;
 
   const onChange = (e) => {
     setSell({ ...sell, [e.target.name]: e.target.value });
@@ -118,6 +134,7 @@ useEffect(() => {
                 <option value="45kgs">45kgs</option>
             </select>
             <br/> 
+
         <select className="form-select" aria-label="Default select example"
               name="cylinderType"
               value={cylinderType}
@@ -151,7 +168,7 @@ useEffect(() => {
             <option>Full Set</option>
         </select>
 
-        <div className="mb-4 py-3">
+        <div className="mb-2 py-2">
           <label className="block mb-1"> Amount </label>
           <input
             type="number"
@@ -164,7 +181,69 @@ useEffect(() => {
           />
         </div>
 
+        <div className="mb-2">
+          <label className="block mb-1">Number of days Gas takes  </label>
+          <input
+            type="number"
+            className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
+            placeholder="Number of days Gas takes"
+            name="numberOfDays"
+            value={numberOfDays}
+            onChange={onChange}
+            required
+          />
+        </div>
+
+        <div className="mb-2">
+          <label className="block mb-1">Cash Paid</label>
+          <input
+            type="number"
+            className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
+            placeholder="Cash Paid"
+            name="paidamount"
+            value={paidamount}
+            onChange={onChange}
+            required
+          />
+        </div>
         <div className="mb-4">
+          <label className="block mb-1">Balance</label>
+          <input
+            type="number"
+            className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
+            placeholder="Balance"
+            name="balance"
+            value={balance}
+            onChange={onChange}
+            required
+          />
+        </div>
+
+        <select class="mb-3 form-select" aria-label="Default select example"
+            name="paymantstatus"
+            value={paymantstatus}
+            onChange={onChange}
+        >
+            <option>Payment Status</option>
+            <option>paid-all</option>
+            <option>Not-paid-all</option>
+            <option>Not-paid</option>
+        </select>
+
+
+        <select class="mb-3 form-select" aria-label="Default select example"
+            name="paymentmethod"
+            value={paymentmethod}
+            onChange={onChange}
+        >
+            <option selected>Payment Methods</option>
+            <option>cash</option>
+            <option>momo</option>
+            <option>airtel</option>
+            <option>phone</option>
+        </select>
+
+        <div className="mb-3">
           <label className="block mb-1">Date</label>
           <input
             type="date"
@@ -177,7 +256,7 @@ useEffect(() => {
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-3">
           <label className="block mb-1"> Time</label>
           <input
             type="time"
@@ -205,7 +284,7 @@ useEffect(() => {
             ))}
           </select>
 
-        <div className="mb-4 py-2">
+        <div className="mb-3 py-2">
           <label className="block mb-1"> Phone</label>
           <input
             type="text"
@@ -214,10 +293,45 @@ useEffect(() => {
             name="phone"
             value={phone}
             onChange={onChange}
-            required
+            
           />
         </div>
 
+        <select class="mb-3 form-select" aria-label="Default select example"
+            name="condition"
+            value={condition}
+            onChange={onChange}
+        >
+            <option selected>Cylinders Conditions</option>
+            <option>very-new</option>
+            <option>new</option>
+            <option>nice</option>
+            <option>old</option>
+        </select>
+
+        <div className="mb-2 py-2">
+          <label className="block mb-1">seal Taken</label>
+          <input
+            type="text"
+            className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
+            placeholder="Seal Taken"
+            name="sealTaken"
+            value={sealTaken}
+            onChange={onChange}
+          
+          />
+        </div>
+        <div className="mb-2 py-2">
+          <label className="block mb-1">Seal Replaced</label>
+          <input
+            type="text"
+            className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
+            placeholder="Seal Taken"
+            name="sealReplaced"
+            value={sealReplaced}
+            onChange={onChange}
+          />
+        </div>
         <button
           type="submit"
           className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full"

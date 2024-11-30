@@ -16,7 +16,7 @@ export const newStockCylinder = async(req, res, next) => {
 };
 
 
-// Query Gas bought
+// Query stocked cylinders
 export const getSockedCylinder = async(req, res) => {
     const cylinder = await CylinderStock.find();
     if(!cylinder){

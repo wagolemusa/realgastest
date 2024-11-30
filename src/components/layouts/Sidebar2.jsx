@@ -112,15 +112,45 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                         </a>
                     </li>
                     <li className='sidebar-list-item'>
+                        <MdOutlineLocalGasStation className='icon' />
+                        <a href="/admin/bulk">
+                            Bulk Gas
+                        </a>
+                    </li>
+                    <li className='sidebar-list-item'>
                         <AiOutlineStock className='icon' />
                         <a href="/admin/sell">
                             Gas Sales
                         </a>
                     </li>
                     <li className='sidebar-list-item'>
+                        <AiOutlineStock className='icon' />
+                        <a href="/admin/sealed">
+                            Create Cylinders
+                        </a>
+                    </li>
+                    <li className='sidebar-list-item'>
+                        <AiOutlineStock className='icon' />
+                        <a href="/admin/resaler">
+                            Resalers
+                        </a>
+                    </li>
+                    <li className='sidebar-list-item'>
+                        <AiOutlineStock className='icon' />
+                        <a href="/admin/updatedseal">
+                            Tracker Cylinders
+                        </a>
+                    </li>
+                    <li className='sidebar-list-item'>
                         <FaCode className='icon' />
                         <a href="/admin/promocode">
                             Promo code
+                        </a>
+                    </li>
+                    <li className='sidebar-list-item'>
+                        <FaCode className='icon' />
+                        <a href="/admin/expense">
+                            Expenses
                         </a>
                     </li>
                     <div class="dropdown">
@@ -160,7 +190,7 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                 </ul>
 
             )}
-
+            
         </aside>
     )
 }

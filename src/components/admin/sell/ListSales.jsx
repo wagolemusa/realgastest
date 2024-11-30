@@ -85,14 +85,15 @@ const ListSales = () => {
                             Amount
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Cust-Name
+                            Paid Amount
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Phone
+                            Balance
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Time
+                            Pay Status
                         </th>
+                     
                         <th scope="col" className="px-6 py-3">
                             Actions
                         </th>
@@ -109,13 +110,19 @@ const ListSales = () => {
                         <td className="px-6 py-2">{sales?.cylinderSize}</td>
                         <td className="px-6 py-2">{sales?.cylinderType}</td>
                         <td className="px-6 py-2">{sales?.amount}</td>
-                        <td className="px-6 py-2">{sales?.customerName}</td>
-                        <td className="px-6 py-2">{sales?.phone}</td>
-                        <td className="px-6 py-2">{sales?.time}</td>
+                        <td className="px-6 py-2">{sales?.paidamount}</td>
+                        <td className="px-6 py-2">{sales?.balance}</td>
+                        <td className="px-6 py-2">{sales?.paymantstatus}</td>
                         <td className="px-6 py-2">
                            
                             <div>
-
+                            <Link
+                                    href={`/admin/sell/new/${sales?._id}`}
+                                    className="px-2 py-2 inline-block text-green-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                                >
+                                    {/* <i className="fa fa-image" aria-hidden="true"></i> */}
+                                    View
+                                </Link>
                                 <Link
                                     href={`/admin/sell/${sales?._id}`}
                                     className="px-2 py-2 inline-block text-yellow-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"

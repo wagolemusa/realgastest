@@ -5,8 +5,7 @@ import APIFilters from "../utils/APIFilters"
 import ErrorHandler from "../utils/errorHandler";
 import moment from 'moment'; // Import moment for date handling
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
-import { startOfDay, endOfDay } from 'date-fns';
-
+import { endOfDay, startOfDay } from 'date-fns';
 
 
   export const getOrders = async (req, res) => {
@@ -18,7 +17,7 @@ import { startOfDay, endOfDay } from 'date-fns';
     );
   const orders = await apiFilters.query.find()
     .populate("shippingInfo user")
-    .sort({createAt: -1})
+    .sort({createdAt: -1})
 
   res.status(200).json({
     ordersCount,
@@ -44,7 +43,7 @@ export const getOrdersToday = async (req, res) => {
 
     // Count documents with today's date and status 'Processing'
     const ordersCount = await Order.countDocuments({
-      createAt: { $gte: startOfToday, $lte: endOfToday },
+      createdAt: { $gte: startOfToday, $lte: endOfToday },
       orderStatus: 'Shipped'
     });
 
@@ -53,14 +52,14 @@ export const getOrdersToday = async (req, res) => {
 
     // Create the API filters with pagination
     const apiFilters = new APIFilters(Order.find({
-      createAt: { $gte: startOfToday, $lte: endOfToday },
+      createdAt: { $gte: startOfToday, $lte: endOfToday },
       orderStatus: 'Shipped'
     }), req.query).pagination(resPerPage);
 
     // Execute the query with populated fields
     const orders = await apiFilters.query.find()
       .populate('shippingInfo user')
-      .sort({ createAt: -1 });
+      .sort({ createdAt: -1 });
 
     // Debugging logs
     console.log('Orders:', orders);
@@ -78,6 +77,55 @@ export const getOrdersToday = async (req, res) => {
   }
 };
 
+
+//  count today's orders
+export const getCountOrders = async(req, res) =>{
+   // Get today's date range using date-fns
+   const startOfToday = startOfDay(new Date());
+   const endOfToday = endOfDay(new Date());
+   const countOrders = await Order.countDocuments({
+       createdAt: { $gte: startOfToday, $lte: endOfToday }
+   })
+
+  console.log("CCCCCCC", countOrders)
+  res.status(200).json({
+    countOrders
+  })
+}
+
+
+
+// Sum all today's sales
+export const getsumTodaySales = async (req, res) => {
+  try {
+
+    // Get the start and end of the day
+     const startOfToday = startOfDay(new Date());
+    const endOfToday = endOfDay(new Date());
+
+    // Query for today's transactions
+    const todaySales = await Order.find({
+      createdAt: { $gte: startOfToday, $lte: endOfToday },
+    }).select('amount'); // Select only the totalAmount field
+
+    // Calculate the total cash
+    const totalCash = todaySales.reduce((sum, order) => sum + order.amount, 0);
+
+    console.log(`Total cash for today: ${totalCash}`);
+
+    // Respond with the total
+    res.status(200).json({
+      totalCash,
+    });
+  } catch (err) {
+    console.error('Error in getsumTodaySales:', err);
+    res.status(500).json({ error: 'An error occurred while calculating total sales.' });
+  }
+};
+
+
+
+
 // today proccing orders for today
 export const getOrderProcessing = async (req, res) => {
   try {
@@ -93,7 +141,7 @@ export const getOrderProcessing = async (req, res) => {
 
     // Count documents with today's date and status 'Processing'
     const ordersCount = await Order.countDocuments({
-      createAt: { $gte: startOfToday, $lte: endOfToday },
+      createdAt: { $gte: startOfToday, $lte: endOfToday },
       orderStatus: 'Processing'
     });
 
@@ -102,14 +150,14 @@ export const getOrderProcessing = async (req, res) => {
 
     // Create the API filters with pagination
     const apiFilters = new APIFilters(Order.find({
-      createAt: { $gte: startOfToday, $lte: endOfToday },
+      createdAt: { $gte: startOfToday, $lte: endOfToday },
       orderStatus: 'Processing'
     }), req.query).pagination(resPerPage);
 
     // Execute the query with populated fields
     const orders = await apiFilters.query.find()
       .populate('shippingInfo user')
-      .sort({ createAt: -1 });
+      .sort({ createdAt: -1 });
 
     // Debugging logs
     console.log('Orders:', orders);
@@ -159,7 +207,7 @@ export const getOrderAllShipped = async (req, res) => {
     // Execute the query with populated fields
     const orders = await apiFilters.query.find()
       .populate('shippingInfo user')
-      .sort({ createAt: -1 });
+      .sort({ createdAt: -1 });
 
     // Debugging logs
     console.log('Orders:', orders);
@@ -231,7 +279,7 @@ export const getOrderAllShippedData = async (req, res) => {
     // Execute the query with populated fields
     const orders = await apiFilters.query.find()
       .populate('shippingInfo user')
-      .sort({createAt: -1});
+      .sort({createdAt: -1});
 
     // Return the response
     res.status(200).json({
@@ -274,7 +322,7 @@ export const getUserOrders = async (req, res) => {
 
     // Find orders associated with the authenticated user
     const order = await Order.find({ user: req.user.id })
-                              .sort({ createAt: -1 })
+                              .sort({ createdAt: -1 })
                               .exec(); // Execute the query
 
     console.log("ordersxxx", order)
