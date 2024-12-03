@@ -463,6 +463,66 @@ async function getCartItems(line_items) {
 
 
 
+// Get-Count-Orders-and-Sum Revenue
+export const getCountOrdersAndSum = async (req, res) => {
+  try {
+    const resPerPage = 100;
+
+    // Get today's date range using date-fns
+    const startOfToday = startOfDay(new Date());
+    const endOfToday = endOfDay(new Date());
+
+    // Debugging logs
+    console.log('Start of Today:', startOfToday);
+    console.log('End of Today:', endOfToday);
+
+    // Perform aggregation to calculate total revenue and count orders
+    const summary = await Order.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: startOfToday, $lte: endOfToday },
+          orderStatus: 'Shipped',
+        },
+      },
+      {
+        $group: {
+          _id: null, // Group all matching documents
+          totalRevenue: { $sum: '$totalAmount' }, // Sum the totalPrice field
+          totalOrders: { $sum: 1 }, // Count the number of orders
+        },
+      },
+    ]);
+
+    // Extract revenue and orders count from aggregation result
+    const totalRevenue = summary.length > 0 ? summary[0].totalRevenue : 0;
+    const totalOrders = summary.length > 0 ? summary[0].totalOrders : 0;
+
+    // Fetch paginated orders for detailed view
+    const apiFilters = new APIFilters(Order.find({
+      createdAt: { $gte: startOfToday, $lte: endOfToday },
+      orderStatus: 'Shipped',
+    }), req.query).pagination(resPerPage);
+
+    const orders = await apiFilters.query.find()
+      .populate('shippingInfo user')
+      .sort({ createdAt: -1 });
+
+    // Debugging logs
+    console.log('Orders:', orders);
+
+    // Return the response
+    res.status(200).json({
+      ordersCount: totalOrders,
+      totalRevenue,
+    });
+  } catch (err) {
+    console.error('Error fetching orders:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+
 export const webhook = async (req, res) => {
   try {
     const rawBody = await getRawBody(req);

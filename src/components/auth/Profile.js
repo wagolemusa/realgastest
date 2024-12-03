@@ -1,14 +1,59 @@
 'use client'
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Link from "next/link";
 import AuthContext from "../../context/AuthContext";
 import UserAddresses from "../user/UserAddresses";
 import Image from "next/image";
+import axios from "axios";
 
-const Profile = ({ addresses }) => {
+const Profile = () => {
 
   const { user } = useContext(AuthContext)
+  const [data, setData] = useState({ ordersCount: 0 }); // Set a default value
+  const [sell, setSell] = useState({ ordersCount: 0 }); // Set a default value
+  const [bulk, setBulk] = useState({ ordersCount: 0 }); // Set a default value
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchOnline() {
+      try {
+        const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/orders/sumOrders`);
+        setData(response.data);
+      } catch (error) {
+        setError('Failed to fetch data');
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    async function fetchSales() {
+      try {
+        const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/sell/salecount`);
+        setSell(response.data);
+      } catch (error) {
+        setError('Failed to fetch data');
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    async function fetchBulk() {
+      try {
+        const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/bulk/countRevene`);
+        setBulk(response.data);
+      } catch (error) {
+        setError('Failed to fetch data');
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchOnline();
+    fetchSales()
+    fetchBulk()
+  }, []);
+
+
+
+  let  finalTotalSum = data.totalRevenue + bulk.totalRevenue + sell.totalRevenue
 
   return (
     <>
@@ -16,33 +61,40 @@ const Profile = ({ addresses }) => {
         <div className="row">
           <div className="col-md-3">
 
-            <a href="#" class="cardx1 block max-w-sm p-3 border-gray-200 rounded-lg shadow text-center hover:bg-gray-100 text-white dark:hover:bg-blue-700">
-
-              <h2 class="font-normal  text-white">ONLINE ORDERS</h2>
-              <h3>59</h3>
+            <a href="#" class="cardx1 block max-w-sm p-3 border-gray-200 rounded-lg shadow  hover:bg-gray-100 text-white dark:hover:bg-blue-700">
+         
+              <p class="font-normal  text-white">ONLINE ORDERS</p>
+              <hr/>
+              <p class="font-normal  text-white">Number of Orders: {data.ordersCount}</p>
+              <p class="font-normal  text-white">Total Revenue: {data.totalRevenue}</p>
             </a>
           </div>
 
           <div className="col-md-3">
-            <a href="#" class="card3 text-center block max-w-sm p-1 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-              <h2 class="font-normal text-gray-700 dark:text-gray-400">SHOPS <br/>SALES</h2>
-              {/* <h2 class="text-lg font-semibold text-gray-900">Top students:</h2> */}
-
-              <h2>30</h2>
+            <a href="#" class="card3 p-3 block max-w-sm bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+              <p class="font-normal text-gray-700 dark:text-gray-600">SHOPS SALES</p>
+              <hr/>
+              <p class="font-normal text-gray-700">Number of Sales: {sell.ordersCount}</p>
+              <p class="font-normal text-gray-700">Total Revenue: {sell.totalRevenue}</p>
 
             </a>
 
           </div>
           <div className="col-md-3">
-            <a href="#" class="cardx2 text-center block max-w-sm p-6 text-white">
-              <h2 class="font-normal text-white dark:text-gray-400">TOTAL</h2>
-              <h3>854000</h3>
+          <a href="#" class="cardx2 p-3 block max-w-sm  border border-gray-200 rounded-lg shadow">
+              <p class="font-normal text-white dark:text-gray-600">WHOLE SALES ORDERS</p>
+              <hr/>
+              <p class="font-normal text-white">Number of Bulk Orders: {bulk.ordersCount}</p>
+              <p class="font-normal text-white">Total Revenue: {bulk.totalRevenue}</p>
+
             </a>
           </div>
+
           <div className="col-md-3">
             <a href="#" class="cardx3 block text-center max-w-sm p-6">
-              <h2 class="font-normal text-white">Expense</h2>
-              <h2>50</h2>
+              <h5 class="font-normal text-white">Final Total Revenue</h5>
+              <hr/>
+              <h2>{finalTotalSum}</h2>
             </a>
 
           </div>
