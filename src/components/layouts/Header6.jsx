@@ -82,8 +82,6 @@ export default function Header6() {
                     </button>
                 </div>
 
-            
-
                 <div className="hidden md:flex md:space-x-8">
                     <ul className="flex space-x-8">
                      
@@ -94,12 +92,8 @@ export default function Header6() {
                     </ul>
                 </div>
 
-               
-
                 {!user ? (
                     <>
-                    
-
                     <button onClick={() => handleNavigate('/login')} className="hidden md:block w-full rounded bg-red-600 px-8 py-2 text-md font-medium text-white shadow hover:bg-red focus:outline-none focus:ring active:bg-red-500 sm:w-auto">
                         <i className="text-gray-400 fa fa-user"></i>
                         <span className="hidden lg:inline ml-1">Sign in</span>
@@ -119,9 +113,6 @@ export default function Header6() {
                                 </div>
                             </div>
                         </button>
-                        
-                      
-                      
                     </>
                 )}
 
@@ -131,6 +122,7 @@ export default function Header6() {
                         </button>
                      </div>
             </nav>
+
 
             {/* Mobile Dialog */}
             <Dialog as='div' className={'md:hidden'} open={mobile} onClose={() => setMobile(false)}>

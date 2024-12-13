@@ -23,32 +23,23 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
         signOut();
     }
 
+
     return (
         <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive" : ""}>
             <div className='sidebar-title'>
-                <BsCart3 className='icon_header' />
-                <a href="/me" className='sidebar-brand'>
-                    Dashboard
-                </a>
-
                 <span className='icon close_icon' onClick={OpenSidebar}>X</span>
             </div>
-            <ul className='sidebar-list'>
-                <li className='sidebar-list-item'>
-                    <BsGrid1X2Fill className='icon' />
-                    <a href="/address">
-                        Address
-                    </a>
-                </li>
-                <li className='sidebar-list-item'>
-                    <BsGrid1X2Fill className='icon' />
-                    <a href="/me/userOrders">
-                        My Orders
-                    </a>
-                </li>
-            </ul>
+     
             {user?.role === 'admin' && (
                 <ul className='sidebar-list'>
+
+                    <li className="sidebar-list-item">
+                    <BsCart3 className='icon_header' />
+                        <a href="/me" className='sidebar-brand'>
+                            Dashboard
+                        </a>
+                    </li>
+
                     <li className='sidebar-list-item'>
                         <BsGrid1X2Fill className='icon' />
                         <a href="/admin/orders">
@@ -190,6 +181,39 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                 </ul>
 
             )}
+
+            {/* Routes for users */}
+            {user?.role == 'user' && (
+                <ul className='sidebar-list'>
+                <li className='sidebar-list-item'>
+                    <BsGrid1X2Fill className='icon' />
+                    <a href="/address">
+                        Address
+                    </a>
+                </li>
+                <li className='sidebar-list-item'>
+                    <BsGrid1X2Fill className='icon' />
+                    <a href="/me/userOrders">
+                        My Orders
+                    </a>
+                </li>
+            </ul>
+            )}
+
+
+            {/* Routes for Shopkeeper */}
+            { user?.role == "shopkeeper" && (
+                <ul className='sidebar-list'>
+                    <li className="sidebar-list-item">
+                    <BsCart3 className='icon_header' />
+                        <a href="/admin/shopkeeper" className='sidebar-brand'>
+                            Shop
+                        </a>
+                    </li>
+                </ul>
+            )}
+        
+
             
         </aside>
     )
