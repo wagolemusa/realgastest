@@ -7,9 +7,9 @@ import Link from "next/link";
 const CreateShop = () => {
     const [data, setData] = useState([]);
     const [sealnumber, setSealnumber] = useState("");
-    const [cylidersize, setCylidersize] = useState("");
-    const [cyliderbrand, setCyliderbrand] = useState("");
-    const [replacedSealnumber, setReplacedSealnumber] = useState("");
+    const [cylindersize, setCylindersize] = useState("");
+    const [cylinderbrand, setCylinderbrand] = useState("");
+    const [replacedseal, setReplacedseal] = useState("");
     const [price, setPrice] = useState("");
     const [phone, setPhone] = useState("");
     const [customername, setCustomername] = useState("");
@@ -21,7 +21,7 @@ const CreateShop = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        updateItemList(prev => [...prev, { sealnumber, cylidersize, cyliderbrand, replacedSealnumber, price, key: Date.now() }]);
+        updateItemList(prev => [...prev, { sealnumber, cylindersize, cylinderbrand, replacedseal, price, key: Date.now() }]);
         e.target.reset();
     };
 
@@ -33,8 +33,21 @@ const CreateShop = () => {
         e.preventDefault();
         setError(null);
 
-        const BookData = { sealnumber, cylidersize, cyliderbrand, replacedSealnumber, price, phone, customername, paymentmethod };
-
+        const BookData = {
+            cylinders: itemList.map(item => ({
+                ...item,
+                sealnumber: item.sealnumber,
+                cylindersize: item.cylindersize,
+                cylinderbrand: item.cylinderbrand,
+                replacedseal: item.replacedseal,
+                price: item.price
+            })),
+            phone,
+            customername,
+            paymentmethod,
+            finalPrice
+        };
+        
         try {
             const response = await axios.post(`${process.env.ENVIRONMENT_URL}/api/admin/shopkeeper`, BookData, {
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
@@ -118,7 +131,7 @@ const CreateShop = () => {
                                         type="text"
                                         className="form-control"
                                         placeholder="Cylinder Size"
-                                        onChange={(e) => setCylidersize(e.target.value)}
+                                        onChange={(e) => setCylindersize(e.target.value)}
                                     />
                                     </div>
                                     <div className="form-group pt-2">
@@ -126,7 +139,7 @@ const CreateShop = () => {
                                         type="text"
                                         className="form-control"
                                         placeholder="Cylinder Brand"
-                                        onChange={(e) => setCyliderbrand(e.target.value)}
+                                        onChange={(e) => setCylinderbrand(e.target.value)}
                                     />
                                     </div>
                                     <div className="form-group pt-2">
@@ -134,7 +147,7 @@ const CreateShop = () => {
                                         type="text"
                                         className="form-control"
                                         placeholder="Replaced Seal Number"
-                                        onChange={(e) => setReplacedSealnumber(e.target.value)}
+                                        onChange={(e) => setReplacedseal(e.target.value)}
                                     />
                                     </div>
                                     <div className="form-group pt-2">
@@ -188,9 +201,9 @@ const CreateShop = () => {
                                     {itemList.map((itemObj) => (
                                         <div key={itemObj.key} className="items">
                                             <p>{itemObj.sealnumber}</p>
-                                            <p>{itemObj.cyliderbrand}</p>
-                                            <p>{itemObj.cylidersize}</p>
-                                            <p>{itemObj.replacedSealnumber}</p>
+                                            <p>{itemObj.cylinderbrand}</p>
+                                            <p>{itemObj.cylindersize}</p>
+                                            <p>{itemObj.replacedseal}</p>
                                             <p>{itemObj.price}</p>
                                             <button onClick={() => deleteItemFromList(itemObj.key)}>
                                                 X

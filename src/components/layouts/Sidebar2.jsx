@@ -175,9 +175,6 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                             Post Gas
                         </a>
                     </li>
-
-
-
                 </ul>
 
             )}
@@ -207,7 +204,14 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                     <li className="sidebar-list-item">
                     <BsCart3 className='icon_header' />
                         <a href="/admin/shopkeeper" className='sidebar-brand'>
-                            Shop
+                            BulkS ales
+                        </a>
+                    </li>
+
+                    <li className="sidebar-list-item">
+                    <BsCart3 className='icon_header' />
+                        <a href="/admin/retail" className='sidebar-brand'>
+                           Retail Sales
                         </a>
                     </li>
                 </ul>

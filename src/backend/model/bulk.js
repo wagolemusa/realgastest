@@ -41,7 +41,7 @@ const bulkSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    paymentmethod: {
+    paymentmethod: {    
         type: String,
         required: false
     },

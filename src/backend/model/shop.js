@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const shopSchema = new mongoose.Schema({
     cylinders: [
         {
-            brand: { type: String, required: true},
-            kgs: { type: Number, required: true },
-            price: { type: Number, required: true },
             sealnumber: { type: String, required: true},
-            replacedseal: {type: String, required: true}
+            replacedseal: {type: String, required: true},
+            cylinderbrand: { type: String, required: true},
+            cylindersize: { type: String, required: true },
+            price: { type: Number, required: true }
         }
     ],
     phone: {
@@ -20,6 +20,10 @@ const shopSchema = new mongoose.Schema({
     },
     paymentmethod: {
         type: String,
+        required: false
+    },
+    finalPrice: {
+        type: Number,
         required: false
     },
     user: {
