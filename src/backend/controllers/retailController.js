@@ -23,9 +23,6 @@ export const newRetail = async(req, res) => {
           branch
       } = req.body;
       
-      let seal = await Retail.findOne({ sealtaken: sealtaken }).select("sealtaken");
-      console.log("sealToken", seal);
-      
       let retailed = new Retail({
           sealtaken,
           sealreplaced,
@@ -40,6 +37,9 @@ export const newRetail = async(req, res) => {
           branch
       });
       await retailed.save();
+
+      let seal = await Stockcylinder.findOne({ sealnumber: sealreplaced }).select("sealnumber  statusStock");
+      console.log("sealToken vvvv", seal);
       
       let takenSeal = await Stockcylinder.findOne({sealnumber: sealtaken }).select("sealnumber statusStock");  // Fetch sealnumber and statusStock
       console.log("takenSeal", takenSeal);
@@ -59,16 +59,16 @@ export const newRetail = async(req, res) => {
       }
       
       // If sealreplaced is equal to sealnumber in stock, update it back to "back-instock" if status is "out-of-stock"
-      if (sealreplaced === takenSeal?.sealnumber && takenSeal?.statusStock === "out-of-stock") {
+      if (sealreplaced === seal?.sealnumber &&  seal?.statusStock === 'out-of-stock'){
           await Stockcylinder.findOneAndUpdate(
-              { sealnumber: sealtaken, statusStock: "out-of-stock" },
+              { sealnumber: sealreplaced, statusStock: "out-of-stock" },
               { $set: { statusStock: "back-instock" } }
           );
           console.log(`Seal ${sealreplaced} status updated to back-instock.`);
       }
 
       // Save if seal number Replaced is not equal to sealnumber
-      if (sealreplaced !== takenSeal?.sealnumber) {
+      if (!seal) {
           let stockCylinder = new Stockcylinder({
               cylinderSize,
               cylinderType,
