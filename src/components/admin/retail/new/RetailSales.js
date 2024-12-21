@@ -1,10 +1,13 @@
 'use client'
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Link from "next/link";
+import AuthContext from "../../../../context/AuthContext";
+import { useSession, signOut } from "next-auth/react";
 
 const Retailsales = () => {
     const [data, setData] = useState([]);
+    const {user, setUser} = useContext(AuthContext)
     const [sealtaken, setSealtaken] = useState("");
     const [sealreplaced, setSealreplaced] = useState("");
     const [cylinderType, setCylinderType] = useState("");
@@ -20,19 +23,29 @@ const Retailsales = () => {
     const [success, setSuccess] = useState("");
     const [searchQuery, setSearchQuery] = useState(""); // Search query input
     const [selectedSeal, setSelectedSeal] = useState(null); // To store selected seal data
+    const { data: session, status } = useSession();
 
     // Fetch data when the component mounts
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/sealed`);
-                setData(response.data?.cylinder || []);
+                const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/sealed/instock`);
+                setData(response.data?.sealedNumbers || []);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
         fetchData();
     }, []);
+
+    useEffect(() => {
+        console.log("Session data:", session);
+        if (session?.user) {
+            setUser(session.user.username); // set user in the context
+        }
+    }, [session, setUser]);
+    
+    console.log("usexxx", user)
 
     // Filter the data based on the search query
     const filteredOptions = data.filter(sealhdata =>
@@ -74,7 +87,8 @@ const Retailsales = () => {
             paymentmethod,
             category,
             condition,
-            branch
+            branch,
+            user
         };
 
         try {

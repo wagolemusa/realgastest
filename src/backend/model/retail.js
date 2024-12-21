@@ -46,8 +46,7 @@ const retailSchema = new mongoose.Schema({
         required: false
     },
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        type: String,
         required: false,
       },   
 }, { timestamps: true})

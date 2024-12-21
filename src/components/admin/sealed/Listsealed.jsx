@@ -63,6 +63,10 @@ const ListSealed = ({ data }) => {
                         <th scope="col" className="px-6 py-3">
                             Shop Name
                         </th>
+
+                        <th scope="col" className="px-6 py-3">
+                            Status
+                        </th>
                         <th scope="col" className="px-6 py-3">
                             Actions
                         </th>
@@ -78,6 +82,7 @@ const ListSealed = ({ data }) => {
                         <td className="px-6 py-2">{sealed?.condition}</td>
                         <td className="px-6 py-2">{sealed?.sealnumber}</td>
                         <td className="px-6 py-2">{sealed?.branch}</td>
+                        <td className="px-6 py-2">{sealed?.statusStock}</td>
                         <td className="px-6 py-2">
                            
                             <div>
