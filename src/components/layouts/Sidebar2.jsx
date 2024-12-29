@@ -214,6 +214,12 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                            Retail Sales
                         </a>
                     </li>
+                    <li className="sidebar-list-item">
+                    <BsCart3 className='icon_header' />
+                        <a href="/admin/shoper" className='sidebar-brand'>
+                           Today Sales
+                        </a>
+                    </li>
                 </ul>
             )}
         

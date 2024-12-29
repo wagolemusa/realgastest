@@ -46,9 +46,10 @@ const retailSchema = new mongoose.Schema({
         required: false
     },
     user: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: false,
-      },   
+    },    
 }, { timestamps: true})
 
 export default mongoose.models.Retail ||

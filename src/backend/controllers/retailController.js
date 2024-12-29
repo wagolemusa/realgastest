@@ -20,8 +20,7 @@ export const newRetail = async(req, res) => {
           customername,
           paymentmethod,
           condition,
-          branch,
-          user
+          branch,    
       } = req.body;
       
       let retailed = new Retail({
@@ -36,7 +35,7 @@ export const newRetail = async(req, res) => {
           paymentmethod,
           condition,
           branch,
-          user
+          user: req.user.id,
       });
       await retailed.save();
 
@@ -131,6 +130,20 @@ export const newRetail = async(req, res) => {
       return res.status(500).json({ message: "An error occurred while processing the sale." });
   }
 }
+
+
+// query sales for specific shopkeeper
+export const getShopkeeperSales = async(req, res) =>{
+  try{
+    const retailer = await Retail.find({user: req.user.id});
+    return res.status(200).json({
+      retailer
+    })
+  } catch(err){
+    res.status(500).json({ error: 'Error creating address' });
+  }
+}
+
 
 
 // Query Sales Data
