@@ -37,6 +37,8 @@ export const newRetail = async(req, res) => {
           branch,
           user: req.user.id,
       });
+
+      console.log("seeee", retailed)
       await retailed.save();
 
       let seal = await Stockcylinder.findOne({ sealnumber: sealreplaced }).select("sealnumber  statusStock");
@@ -133,16 +135,16 @@ export const newRetail = async(req, res) => {
 
 
 // query sales for specific shopkeeper
-export const getShopkeeperSales = async(req, res) =>{
-  try{
-    const retailer = await Retail.find({user: req.user.id});
-    return res.status(200).json({
-      retailer
-    })
-  } catch(err){
-    res.status(500).json({ error: 'Error creating address' });
-  }
-}
+// export const getShopkeeperSales = async(req, res) =>{
+//   try{
+//     const retailer = await Retail.find({user: req.user.id});
+//     return res.status(200).json({
+//       retailer
+//     })
+//   } catch(err){
+//     res.status(500).json({ error: 'Error creating address' });
+//   }
+// }
 
 
 
@@ -170,87 +172,89 @@ export const getCountSales = async(req, res) =>{
   
 
 
-// Get-Count-Orders-and-Sum Revenue
-export const getCountSalesAndSumRevenue = async (req, res) => {
-    try {
-      const resPerPage = 100;
-      // Get today's date range using date-fns
-      const startOfToday = startOfDay(new Date());
-      const endOfToday = endOfDay(new Date());
-  
-      // Perform aggregation to calculate total revenue and count orders
-      const summary = await Sell.aggregate([
-        {
-          $match: {
-            createdAt: { $gte: startOfToday, $lte: endOfToday }
-          },
+// Get-Count-Orders-and-Sum Revenue for a specific user
+export const getShopkeeperSales = async (req, res) => {
+  try {
+    const resPerPage = 100; // This could be used for pagination if needed
+
+    // Get today's date range using date-fns
+    const startOfToday = startOfDay(new Date());
+    const endOfToday = endOfDay(new Date());
+
+    // Perform aggregation to calculate total revenue and count orders for a specific user
+    const summary = await Retail.aggregate([
+      {
+        $match: {
+          user: req.user.id, // Filter orders for the specific user
+          createdAt: { $gte: startOfToday, $lte: endOfToday },
         },
-        {
-          $group: {
-            _id: null, // Group all matching documents
-            totalRevenue: { $sum: '$amount' }, // Sum the totalPrice field
-            totalOrders: { $sum: 1 }, // Count the number of orders
-          },
+      },
+      {
+        $group: {
+          _id: null, // Group all matching documents
+          totalRevenue: { $sum: '$price' }, // Sum the amount field
+          totalOrders: { $sum: 1 }, // Count the number of orders
         },
-      ]);
-      // Debugging logs
-      console.log('Summary:', summary);
-      // Extract revenue and orders count from aggregation result
-      const totalRevenue = summary.length > 0 ? summary[0].totalRevenue : 0;
-      const totalOrders = summary.length > 0 ? summary[0].totalOrders : 0;
-  
-      // Fetch paginated orders for detailed view
-      const apiFilters = new APIFilters(Sell.find({
-        createdAt: { $gte: startOfToday, $lte: endOfToday },
-        orderStatus: 'Shipped',
-      }), req.query).pagination(resPerPage);
-  
-      const orders = await apiFilters.query.find()
-        .populate('shippingInfo user')
-        .sort({ createdAt: -1 });
-      // Debugging logs
-      console.log('Orders:', orders);
-      // Return the response
-      res.status(200).json({
-        ordersCount: totalOrders,
-        totalRevenue,
-      });
-    } catch (err) {
-      console.error('Error fetching orders:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  };
-  
+      },
+    ]);
+
+    // Debugging logs
+    console.log('Summary:', summary);
+
+    // Extract revenue and orders count from aggregation result
+    const totalRevenue = summary.length > 0 ? summary[0].totalRevenue : 0;
+    const totalOrders = summary.length > 0 ? summary[0].totalOrders : 0;
+
+    // Optionally, fetch the individual orders if needed
+    const orders = await Retail.find({
+      user: req.user.id, // Filter for the specific user
+      createdAt: { $gte: startOfToday, $lte: endOfToday },
+    })
+      .populate('user')
+      .sort({ createdAt: -1 });
+
+    // Debugging logs
+    console.log('Orders:', orders);
+
+    // Return the response with total revenue, order count, and orders
+    res.status(200).json({
+      ordersCount: totalOrders,
+      totalRevenue,
+      orders, // Optionally include orders in the response
+    });
+  } catch (err) {
+    console.error('Error fetching orders:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 
-// Sum all today's sales
-export const getsumTodaySalesOnShop = async (req, res) => {
-    try {
-      // const now = new Date();
-  
-      // Get the start and end of the day
-      const startOfToday = startOfDay(new Date());
-      const endOfToday = endOfDay(new Date());
-  
-      // Query for today's transactions
-      const todaySales = await Sell.find({
-        createdAt: { $gte: startOfToday, $lte: endOfToday },
-      }).select('amount'); // Select only the totalAmount field
-  
-      // Calculate the total cash
-      const totalCash = todaySales.reduce((sum, order) => sum + order.amount, 0);
-  
-      console.log(`Total cash for today: ${totalCash}`);
-  
-      // Respond with the total
-      res.status(200).json({
-        totalCash,
-      });
-    } catch (err) {
-      console.error('Error in getsumTodaySales:', err);
-      res.status(500).json({ error: 'An error occurred while calculating total sales.' });
-    }
-  };
+export const getsumTodaySalesRetail = async (req, res) => {
+  try {
+    // Get the start and end of the day
+    const startOfToday = startOfDay(new Date());
+    const endOfToday = endOfDay(new Date());
+
+    // Query for today's transactions
+    const todaySales = await Retail.find({
+      user: req.user.id, // Filter by user
+      createdAt: { $gte: startOfToday, $lte: endOfToday }, // Filter by today's date range
+    }).select('price'); // Select only the price field
+
+    // Calculate the total cash
+    const totalCash = todaySales.reduce((sum, order) => sum + order.price, 0);
+
+    console.log(`Total cash for today: ${totalCash}`);
+
+    // Respond with the total
+    res.status(200).json({
+      totalCash,
+    });
+  } catch (err) {
+    console.error('Error in getsumTodaySales:', err);
+    res.status(500).json({ error: 'An error occurred while calculating total sales.' });
+  }
+};
   
 
 // get Sales by ID

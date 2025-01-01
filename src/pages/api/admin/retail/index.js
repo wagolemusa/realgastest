@@ -6,7 +6,7 @@ import {
   
   isAuthenticatedUser,
 } from "../../../../backend/middlewares/auth";
-import { newRetail } from '../../../../backend/controllers/retailController';
+import {  newRetail } from '../../../../backend/controllers/retailController';
 
 
 const router = createRouter({ 
@@ -17,7 +17,7 @@ dbConnect();
 
 
 router.use(isAuthenticatedUser).post(newRetail);
-// router.use(isAuthenticatedUser).get(getSealedCylinder)
+
 
 
 export default router.handler();

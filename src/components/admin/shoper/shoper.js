@@ -10,14 +10,29 @@ import { useRouter } from "next/navigation";
 
 
 const Shoper = () => {
-
+    const [retail, setRetail] = useState({ ordersCount: 0 })
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const router = useRouter();
 
     // const {deleteCompany } = useContext(CompanyContext)
 
+
+
+    
+
     useEffect(() => {
+
+        async function fetchOnline() {
+            try {
+              const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/shoper/retailsum`);
+              setRetail(response.data);
+            } catch (error) {
+              setError('Failed to fetch data');
+              console.error('Error fetching data:', error);
+            }
+        }
+
         async function fetchData(){
             try{
                 const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/shoper`);
@@ -28,19 +43,21 @@ const Shoper = () => {
             }
         }
         fetchData();
+        fetchOnline();
     }, []);
 
 
-    console.log("ZZZZZZ", data)
+    console.log("ZZZZZZ", retail.totalCash)
 
    
     return (
 
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
                 <h1 className="text-3xl my-5 ml-4 font-bold">
-                <Link href="/admin/sell/new" className="btn btn-primary">Create Sales</Link>
+                <Link href="/admin/retail" className="btn btn-primary">Sales Gas</Link>
 
                 </h1>
+          {retail.totalCash}
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                     <tr>
@@ -76,7 +93,7 @@ const Shoper = () => {
                 </thead>
                 <tbody>
              
-                    {data?.retailer?.map(( sales ) => (
+                    {data?.orders?.map(( sales ) => (
                         
                         <tr key={sales._id} className="bg-white">
                         <td className="px-6 py-2">{sales?.sealtaken}</td>

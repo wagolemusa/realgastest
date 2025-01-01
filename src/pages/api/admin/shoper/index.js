@@ -6,7 +6,7 @@ import {
   
   isAuthenticatedUser,
 } from "../../../../backend/middlewares/auth";
-import { getShopkeeperSales } from '../../../../backend/controllers/retailController';
+import { getShopkeeperSales} from '../../../../backend/controllers/retailController';
 
 
 const router = createRouter({ 
@@ -17,7 +17,6 @@ dbConnect();
 
 
 router.use(isAuthenticatedUser).get(getShopkeeperSales);
-
 
 
 export default router.handler();
