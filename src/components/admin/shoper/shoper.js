@@ -46,18 +46,17 @@ const Shoper = () => {
         fetchOnline();
     }, []);
 
-
-    console.log("ZZZZZZ", retail.totalCash)
-
    
     return (
 
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
                 <h1 className="text-3xl my-5 ml-4 font-bold">
                 <Link href="/admin/retail" className="btn btn-primary">Sales Gas</Link>
-
                 </h1>
-          {retail.totalCash}
+                <div className="my-2 ml-4 retailcash">
+                    Cash Sold <br/>    {retail.totalCash}
+
+                </div>
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                     <tr>

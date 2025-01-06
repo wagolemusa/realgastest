@@ -35,7 +35,7 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
 
                     <li className="sidebar-list-item">
                     <BsCart3 className='icon_header' />
-                        <a href="/me" className='sidebar-brand'>
+                        <a href="/admin" className='sidebar-brand'>
                             Dashboard
                         </a>
                     </li>
