@@ -18,7 +18,7 @@ export const newStockCylinder = async(req, res, next) => {
 
 // Query stocked cylinders
 export const getSockedCylinder = async(req, res) => {
-    const cylinder = await CylinderStock.find();
+    const cylinder = await CylinderStock.find({sealnumber}).select("back-instock instock");
     if(!cylinder){
         return res.status(400).json({
             message: "There is No Gas Records"

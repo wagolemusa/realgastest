@@ -1,72 +1,91 @@
 'use client'
 
-import React, { useState, Suspense} from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import CustromPagination from "../../layouts/CustromPagination";
 import { toast } from "react-toastify";
 import '../../layouts/styles.css'
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 
-const ListSealed = ({ data }) => {
+const Shoper = () => {
+    const [retail, setRetail] = useState({ ordersCount: 0 })
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
+    const router = useRouter();
 
-    const [error, setError] = useState()
+    // const {deleteCompany } = useContext(CompanyContext)
 
 
-    // Delete Company Data
-    const deleteCustomer = async (id) => {
-        // Utility function to validate ObjectId
-        const isValidObjectId = (id) => /^[a-f\d]{24}$/i.test(id);
+
     
-        if (!isValidObjectId(id)) {
-            setError("Invalid company ID format");
-            return;
+
+    useEffect(() => {
+
+        async function fetchOnline() {
+            try {
+              const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/shoper/retailsum`);
+              setRetail(response.data);
+            } catch (error) {
+              setError('Failed to fetch data');
+              console.error('Error fetching data:', error);
+            }
         }
 
-        try {
-            const response = await axios.delete(`${process.env.ENVIRONMENT_URL}/api/admin/customer/${id}`);
-            
-            if (response.data?.success) {
-                router.replace(`/admin/customer`);
-            } else {
-                setError("Failed to delete company. Please try again.");
+        async function fetchData(){
+            try{
+                const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/shoper`);
+                setData(response.data);
+            } catch(error){
+                setError('Failed to fetch data');
+                console.error('Error fetching data:', error);
             }
-        } catch (error) {
-            console.error("Delete company error:", error);
-            setError(error?.response?.data?.message || "An error occurred. Please try again.");
         }
-    }
+        fetchData();
+        fetchOnline();
+    }, []);
+
+
+    console.log("ZZZZZZ", retail.totalCash)
 
    
     return (
 
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
                 <h1 className="text-3xl my-5 ml-4 font-bold">
-                     <Link href="/admin/sealed/new" className="btn btn-primary">Stock Cylinders</Link>
+                <Link href="/admin/retail" className="btn btn-primary">Sales Gas</Link>
 
                 </h1>
+          {retail.totalCash}
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                     <tr>
-                        <th scope="col" className="px-6 py-3">
-                            Cylinders Size
+                    <th scope="col" className="px-6 py-3">
+                            SealToken
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Cylinder Brand
+                          SealReplaced
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Cylinder Condition
+                        Cylinder Type
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            SealNumber
+                        Cylinder Size
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Shop Name
+                        Category
                         </th>
-
                         <th scope="col" className="px-6 py-3">
-                            Status
+                        Price
                         </th>
+                        <th scope="col" className="px-6 py-3">
+                        Paymentmethod
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                        Condition
+                        </th>
+                       
                         <th scope="col" className="px-6 py-3">
                             Actions
                         </th>
@@ -74,35 +93,36 @@ const ListSealed = ({ data }) => {
                 </thead>
                 <tbody>
              
-                    {data?.cylinder?.map(( sealed ) => (
+                    {data?.orders?.map(( sales ) => (
                         
-                        <tr key={sealed._id} className="bg-white">
-                        <td className="px-6 py-2">{sealed?.cylinderSize}</td>
-                        <td className="px-6 py-2">{sealed?.cylinderType}</td>
-                        <td className="px-6 py-2">{sealed?.condition}</td>
-                        <td className="px-6 py-2">{sealed?.sealnumber}</td>
-                        <td className="px-6 py-2">{sealed?.branch}</td>
-                        <td className="px-6 py-2">{sealed?.statusStock}</td>
+                        <tr key={sales._id} className="bg-white">
+                        <td className="px-6 py-2">{sales?.sealtaken}</td>
+                        <td className="px-6 py-2">{sales?.sealreplaced}</td>
+                        <td className="px-6 py-2">{sales?.cylinderType}</td>
+                        <td className="px-6 py-2">{sales?.cylinderSize}</td>
+                        <td className="px-6 py-2">{sales?.category}</td>
+                        <td className="px-6 py-2">{sales?.price}</td>
+                        <td className="px-6 py-2">{sales?.paymentmethod}</td>
+                        <td className="px-6 py-2">{sales?.condition}</td>
                         <td className="px-6 py-2">
                            
                             <div>
-                                <Link
-                                    href={`/admin/customer/new/${sealed?._id}`}
+                            <Link
+                                    href={`/admin/sell/new/${sales?._id}`}
                                     className="px-2 py-2 inline-block text-green-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                                 >
                                     {/* <i className="fa fa-image" aria-hidden="true"></i> */}
                                     View
                                 </Link>
-
                                 <Link
-                                    href={`/admin/customer/${sealed?._id}`}
+                                    href={`/admin/sell/${sales?._id}`}
                                     className="px-2 py-2 inline-block text-yellow-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                                 >
                                     {/* <i className="fa fa-pencil" aria-hidden="true"></i> */}
                                     Edit
                                 </Link>
                                 <a className="px-2 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                                    onClick={() => deleteCustomer(sealed?._id)}
+                                    onClick={() => deleteSales(sales?._id)}
                                 >
                                     {/* <i className="fa fa-trash" aria-hidden="true"></i> */}
                                     Delete
@@ -129,4 +149,6 @@ const ListSealed = ({ data }) => {
     );
 };
 
-export default ListSealed;
+export default Shoper;
+
+

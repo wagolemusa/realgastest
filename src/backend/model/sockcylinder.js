@@ -11,7 +11,7 @@ const stockcylinderSchema = new mongoose.Schema({
     },
     condition: {
         type: String,
-        required: true
+        required: false
     },
     sealnumber: {
         type: String,
@@ -21,7 +21,10 @@ const stockcylinderSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-
+    statusStock: {
+        type: String,
+        default: "instock"
+    }
 }, {timestamps: true})
 
 export default mongoose.models.Stockcylinder || 

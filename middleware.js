@@ -10,6 +10,10 @@ export default withAuth(async function middleware(req) {
         return NextResponse.redirect(new URL("/", req.url))
     }
 
+    if(url?.startsWith("/admin/shopkeeper") && userRole !== "shopkeeper"){
+        return NextResponse.redirect(new URL("/admin/shopkeeper", req.url))
+    }
+
 },
 {
     callbacks:{

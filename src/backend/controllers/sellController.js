@@ -181,7 +181,8 @@ export const getsumTodaySalesOnShop = async (req, res) => {
   
       // Query for today's transactions
       const todaySales = await Sell.find({
-        createdAt: { $gte: startOfToday, $lte: endOfToday },
+        createdAt: {
+           $gte: startOfToday, $lte: endOfToday },
       }).select('amount'); // Select only the totalAmount field
   
       // Calculate the total cash
