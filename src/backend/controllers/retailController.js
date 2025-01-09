@@ -176,7 +176,7 @@ export const newRetail = async (req, res) => {
     let getPoints = await Point.findOne({phone}).select("points")
     
     let to = "+" + 256 + phone;
-    await phoneSms(to, `Thanks Customer For Promoting gasmen.biz Now your Points is ${getPoints.points}`)
+    await phoneSms(to, `Thanks Customer For Promoting bestpricegas solution Now you have ${getPoints.points} Points`)
 
     return res.status(201).json({
       seal

@@ -3,7 +3,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import Link from "next/link";
 import AuthContext from "../../../context/AuthContext";
-import UserAddresses from "../user/UserAddresses";
 import Image from "next/image";
 import axios from "axios";
 
