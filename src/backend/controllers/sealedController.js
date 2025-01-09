@@ -36,7 +36,7 @@ export const getOnlySealnumber = async (req, res) => {
         // Querying for cylinders where status is either "back-instock" or "instock"
         const sealedNumbers = await Stockcylinder.find({
             statusStock: { $in: ["back-instock", "instock"] }
-        }).select("sealnumber status instock"); // Ensure you are selecting the fields you need
+        }).select("sealnumber cylinderSize cylinderType branch"); // Ensure you are selecting the fields you need
 
         if (sealedNumbers.length === 0) {
             return res.status(404).json({

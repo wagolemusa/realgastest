@@ -128,7 +128,8 @@ const Retailsales = () => {
                                             type="text"
                                             className="form-control"
                                             placeholder="Search Seal Number"
-                                            value={searchQuery}
+                                            // value={searchQuery}
+                                            value={sealtaken}
                                             onChange={handleSearchInputChange}
                                         />
                                         {searchQuery && (
