@@ -1,12 +1,10 @@
 'use client'
-
 import React, { useState, Suspense} from "react";
 import Link from "next/link";
 import CustromPagination from "../../layouts/CustromPagination";
 import { toast } from "react-toastify";
 import '../../layouts/styles.css'
 import axios from "axios";
-
 
 const ListSealed = ({ data }) => {
 
@@ -42,9 +40,12 @@ const ListSealed = ({ data }) => {
 
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
                 <h1 className="text-3xl my-5 ml-4 font-bold">
-                     <Link href="/admin/sealed/new" className="btn btn-primary">Stock Cylinders</Link>
-
+                     <Link href="/admin/sealed/new" className="btn btn-primary">Stock Cylinders</Link> 
+                     <Link href="/admin/sealed/instock" className="btn btn-danger">In-Stock</Link>
+                     <Link href="/admin/sealed/backinstock" className="btn btn-success">Back-In-Stock</Link>
+                     <Link href="/admin/sealed/outofstock" className="btn btn-warning">Out-of-Stock</Link>
                 </h1>
+
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                     <tr>
@@ -115,15 +116,13 @@ const ListSealed = ({ data }) => {
                 </tbody>
             </table>
 
-
-                    
-
             <div className="mb-6">
                 <CustromPagination
                     resPerPage={data?.resPerPage}
                     productsCount={data?.filteredProductsCount}
                 />
             </div>
+
         </Suspense>
 
     );
