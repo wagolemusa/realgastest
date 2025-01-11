@@ -1,5 +1,6 @@
 import Stockcylinder from "../model/sockcylinder";
 import APIFilters from "../utils/APIFilters";
+import { startOfDay, endOfDay } from 'date-fns';
 
 export const newSealedCylinder = async(req, res, next) => {
     try{
@@ -73,57 +74,59 @@ export const deleteSealedCylinder = async(req, res, next) => {
     })
 };
 
-export const getInStockProductsByDateAndStatus = async (req, res) => {
-    try {
-    //   const resPerPage = parseInt(req.query.resPerPage, 10) || 100; // Pagination size, default to 100
-      const { statusStock } = req.query;
 
-      console.log("DDDD",req.body)
-  
-      // Validate and parse the provided date
-    //   if (!createdAt) {
-    //     return res.status(400).json({ error: 'Date query parameter is required' });
-    //   }
-    //   const queryDate = new Date(date);
-    //   if (isNaN(queryDate)) {
-    //     return res.status(400).json({ error: 'Invalid date format' });
-    //   }
-  
-      // Validate the status input
-    //   if (!statusStock) {
-    //     return res.status(400).json({ error: 'Status query parameter is required' });
-    //   }
-  
-      // Get start and end of the provided date
-    //   const startOfQueryDate = startOfDay(queryDate);
-    //   const endOfQueryDate = endOfDay(queryDate);
-  
-      // Count documents with the specified date and status
-    //   const productsCount = await Stockcylinder.countDocuments({
-    //     // createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
-    //     statusStock: statusStock, // Use the provided status
-    //   });
-  
-      // Apply filters and execute the query
-    //   const apiFilters = new APIFilters(
-    //     Stockcylinder.find({
-    //     //   createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
-    //       statusStock: statusStock,
-    //     }),
-     
-  
-      const products = await Stockcylinder.find(statusStock)
-  
-      // Return the response
-      res.status(200).json({
-        // success: true,
-        // productsCount,
-        // resPerPage,
-        products,
-      });
-    } catch (err) {
-      console.error('Error fetching products:', err);
-      res.status(500).json({ error: err.message || 'Internal Server Error' });
+
+export const getInStockProductsByDateAndStatus = async (req, res) => {
+  try {
+    const resPerPage = parseInt(req.query.resPerPage, 10) || 100; // Pagination size, default to 100
+    const { createdAt, statusStock } = req.body; // Extract data from req.body
+
+    console.log("Request Body:", req.body);
+
+    // Validate and parse the provided date
+    if (!createdAt) {
+      return res.status(400).json({ error: 'Date query parameter is required' });
     }
-  };
-  
+    const queryDate = new Date(createdAt);
+    if (isNaN(queryDate)) {
+      return res.status(400).json({ error: 'Invalid date format' });
+    }
+
+    // Validate the statusStock input
+    if (!statusStock) {
+      return res.status(400).json({ error: 'statusStock query parameter is required' });
+    }
+
+    // Get start and end of the provided date
+    const startOfQueryDate = startOfDay(queryDate);
+    const endOfQueryDate = endOfDay(queryDate);
+
+    // Count documents with the specified date and statusStock
+    const productsCount = await Stockcylinder.countDocuments({
+      createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
+      statusStock: statusStock, // Use the provided statusStock
+    });
+
+    // Apply filters and execute the query
+    const apiFilters = new APIFilters(
+      Stockcylinder.find({
+        createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
+        statusStock: statusStock,
+      }),
+      req.query
+    ).pagination(resPerPage);
+
+    const products = await apiFilters.query.find();
+
+    // Return the response
+    res.status(200).json({
+      success: true,
+      productsCount,
+      resPerPage,
+      products,
+    });
+  } catch (err) {
+    console.error('Error fetching products:', err);
+    res.status(500).json({ error: err.message || 'Internal Server Error' });
+  }
+};
