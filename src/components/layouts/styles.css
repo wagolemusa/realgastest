@@ -1302,6 +1302,16 @@ th{
   padding-left: 15px;
   font-size: 20px;
 }
+.records {
+  width: 160px;
+  background-color: #F98080;
+  color: #ffffff;
+  font-weight: 700;
+  height: 80px;
+  padding-top: 30px;
+  padding-left: 15px;
+  font-size: 22px;
+}
 
 @media screen and (max-width: 992px) {
   .grid-container {

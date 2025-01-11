@@ -6,9 +6,12 @@ import { toast } from "react-toastify";
 import '../../layouts/styles.css'
 import axios from "axios";
 
-const ListSealed = ({ data }) => {
+const ListSealed = () => {
 
     const [error, setError] = useState()
+    const [data, setData] = useState({productsCount: 0})
+    const [createdAt, setCreatedAt] = useState();
+    const [statusStock, setStatusStock] = useState();
 
 
     // Delete Company Data
@@ -35,16 +38,75 @@ const ListSealed = ({ data }) => {
         }
     }
 
+    const handleSave = async (e) => {
+        e.preventDefault();
+        setError(null);
+
+        const BookData = {
+            createdAt,
+            statusStock
+        };
+
+        try {
+            const response = await axios.post(`${process.env.ENVIRONMENT_URL}/api/admin/sealed/instocked`, BookData, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.status === 201) {
+                window.location.replace("/admin/sealed");
+            }
+
+            setData(response.data);
+        } catch (err) {
+            if (err.response) {
+                setError(err.response.data.message);
+            } else {
+                setError(err.message);
+            }
+        }
+    }
+
+    console.log("search Data", data)
    
     return (
 
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
                 <h1 className="text-3xl my-5 ml-4 font-bold">
                      <Link href="/admin/sealed/new" className="btn btn-primary">Stock Cylinders</Link> 
-                     <Link href="/admin/sealed/instock" className="btn btn-danger">In-Stock</Link>
+                     {/* <Link href="/admin/sealed/instock" className="btn btn-danger">In-Stock</Link>
                      <Link href="/admin/sealed/backinstock" className="btn btn-success">Back-In-Stock</Link>
-                     <Link href="/admin/sealed/outofstock" className="btn btn-warning">Out-of-Stock</Link>
+                     <Link href="/admin/sealed/outofstock" className="btn btn-warning">Out-of-Stock</Link> */}
                 </h1>
+                 
+
+                <form onSubmit={handleSave}>
+                    <p className="text-bold text-2xl">Search Records E.g instock, out-of-stock, back-instock</p>
+                <div class="grid gap-6 mb-6 md:grid-cols-3">
+                    <div>
+                    <input type="date" class="form-control" placeholder="How many Kgs"
+                            onChange={e => setCreatedAt(e.target.value)} />
+
+                    </div>
+                    <div>
+                    <select className="form-select" aria-label="Default select example"
+                                        onChange={(e) => setStatusStock(e.target.value)}
+                                    >
+                                        <option>Select</option>
+                                        <option>instock</option>
+                                        <option>out-of-stock</option>
+                                        <option>Back-instock</option>
+
+                                    </select>
+                    </div>
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                    </div>
+                </form>
+                <div className="records">
+                    {data.productsCount} Records
+                </div>
 
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
@@ -75,7 +137,7 @@ const ListSealed = ({ data }) => {
                 </thead>
                 <tbody>
              
-                    {data?.cylinder?.map(( sealed ) => (
+                    {data?.products?.map(( sealed ) => (
                         
                         <tr key={sealed._id} className="bg-white">
                         <td className="px-6 py-2">{sealed?.cylinderSize}</td>
@@ -87,13 +149,7 @@ const ListSealed = ({ data }) => {
                         <td className="px-6 py-2">
                            
                             <div>
-                                <Link
-                                    href={`/admin/customer/new/${sealed?._id}`}
-                                    className="px-2 py-2 inline-block text-green-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
-                                >
-                                    {/* <i className="fa fa-image" aria-hidden="true"></i> */}
-                                    View
-                                </Link>
+                               
 
                                 <Link
                                     href={`/admin/customer/${sealed?._id}`}
@@ -102,12 +158,7 @@ const ListSealed = ({ data }) => {
                                     {/* <i className="fa fa-pencil" aria-hidden="true"></i> */}
                                     Edit
                                 </Link>
-                                <a className="px-2 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                                    onClick={() => deleteCustomer(sealed?._id)}
-                                >
-                                    {/* <i className="fa fa-trash" aria-hidden="true"></i> */}
-                                    Delete
-                                </a>
+                             
                             </div>
                         </td>
                     </tr>
