@@ -6,7 +6,7 @@ import {
   
   isAuthenticatedUser,
 } from "../../../../../backend/middlewares/auth";
-import { getInStockProductsByDate } from '../../../../../backend/controllers/sealedController';
+import { getInStockProductsByDateAndStatus } from '../../../../../backend/controllers/sealedController';
 
 
 const router = createRouter({ 
@@ -17,7 +17,7 @@ dbConnect();
 
 
 
-router.use(isAuthenticatedUser).get(getInStockProductsByDate)
+router.use(isAuthenticatedUser).post(getInStockProductsByDateAndStatus)
 
 
 export default router.handler();

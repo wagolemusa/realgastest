@@ -1,4 +1,5 @@
 import Stockcylinder from "../model/sockcylinder";
+import APIFilters from "../utils/APIFilters";
 
 export const newSealedCylinder = async(req, res, next) => {
     try{
@@ -72,47 +73,52 @@ export const deleteSealedCylinder = async(req, res, next) => {
     })
 };
 
-
-// Search by date 
-export const getInStockProductsByDate = async (req, res) => {
+export const getInStockProductsByDateAndStatus = async (req, res) => {
     try {
-      const resPerPage = parseInt(req.query.resPerPage, 10) || 100; // Pagination size, default to 100
-      const { date } = req.query;
+    //   const resPerPage = parseInt(req.query.resPerPage, 10) || 100; // Pagination size, default to 100
+      const { statusStock } = req.query;
+
+      console.log("DDDD",req.body)
   
       // Validate and parse the provided date
-      if (!date) {
-        return res.status(400).json({ error: 'Date query parameter is required' });
-      }
-      const queryDate = new Date(date);
-      if (isNaN(queryDate)) {
-        return res.status(400).json({ error: 'Invalid date format' });
-      }
+    //   if (!createdAt) {
+    //     return res.status(400).json({ error: 'Date query parameter is required' });
+    //   }
+    //   const queryDate = new Date(date);
+    //   if (isNaN(queryDate)) {
+    //     return res.status(400).json({ error: 'Invalid date format' });
+    //   }
+  
+      // Validate the status input
+    //   if (!statusStock) {
+    //     return res.status(400).json({ error: 'Status query parameter is required' });
+    //   }
   
       // Get start and end of the provided date
-      const startOfQueryDate = startOfDay(queryDate);
-      const endOfQueryDate = endOfDay(queryDate);
+    //   const startOfQueryDate = startOfDay(queryDate);
+    //   const endOfQueryDate = endOfDay(queryDate);
   
-      // Count documents with the specified date and status 'In Stock'
-      const productsCount = await Stockcylinder.countDocuments({
-        createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
-        statusStock: 'instock',
-      });
+      // Count documents with the specified date and status
+    //   const productsCount = await Stockcylinder.countDocuments({
+    //     // createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
+    //     statusStock: statusStock, // Use the provided status
+    //   });
   
       // Apply filters and execute the query
-      const apiFilters = new APIFilters(
-        Stockcylinder.find({
-          createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
-          statusStock: 'instock',
-        }),
-        req.query
-      ).pagination(resPerPage);
+    //   const apiFilters = new APIFilters(
+    //     Stockcylinder.find({
+    //     //   createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
+    //       statusStock: statusStock,
+    //     }),
+     
   
-      const products = await apiFilters.query.find()
+      const products = await Stockcylinder.find(statusStock)
+  
       // Return the response
       res.status(200).json({
-        success: true,
-        productsCount,
-        resPerPage,
+        // success: true,
+        // productsCount,
+        // resPerPage,
         products,
       });
     } catch (err) {
@@ -120,3 +126,4 @@ export const getInStockProductsByDate = async (req, res) => {
       res.status(500).json({ error: err.message || 'Internal Server Error' });
     }
   };
+  
