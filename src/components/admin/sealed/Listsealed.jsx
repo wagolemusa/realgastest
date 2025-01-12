@@ -76,6 +76,7 @@ const ListSealed = () => {
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
                 <h1 className="text-3xl my-5 ml-4 font-bold">
                      <Link href="/admin/sealed/new" className="btn btn-primary">Stock Cylinders</Link> 
+                     
                      {/* <Link href="/admin/sealed/instock" className="btn btn-danger">In-Stock</Link>
                      <Link href="/admin/sealed/backinstock" className="btn btn-success">Back-In-Stock</Link>
                      <Link href="/admin/sealed/outofstock" className="btn btn-warning">Out-of-Stock</Link> */}
