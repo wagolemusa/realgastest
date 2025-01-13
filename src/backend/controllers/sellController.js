@@ -3,6 +3,7 @@ import { startOfDay, endOfDay } from 'date-fns';
 import Sockcylinder from '../model/sockcylinder';
 import Updateseal from '../model/updateseal';
 import APIFilters from "../utils/APIFilters"
+import Retail from '../model/retail';
 
 // create sell gas
 export const newSell = async(req, res) => {
@@ -126,7 +127,7 @@ export const getCountSalesAndSumRevenue = async (req, res) => {
       const endOfToday = endOfDay(new Date());
   
       // Perform aggregation to calculate total revenue and count orders
-      const summary = await Sell.aggregate([
+      const summary = await Retail.aggregate([
         {
           $match: {
             createdAt: { $gte: startOfToday, $lte: endOfToday }
@@ -135,7 +136,7 @@ export const getCountSalesAndSumRevenue = async (req, res) => {
         {
           $group: {
             _id: null, // Group all matching documents
-            totalRevenue: { $sum: '$amount' }, // Sum the totalPrice field
+            totalRevenue: { $sum: '$price' }, // Sum the totalPrice field
             totalOrders: { $sum: 1 }, // Count the number of orders
           },
         },
@@ -147,13 +148,11 @@ export const getCountSalesAndSumRevenue = async (req, res) => {
       const totalOrders = summary.length > 0 ? summary[0].totalOrders : 0;
   
       // Fetch paginated orders for detailed view
-      const apiFilters = new APIFilters(Sell.find({
-        createdAt: { $gte: startOfToday, $lte: endOfToday },
-        orderStatus: 'Shipped',
+      const apiFilters = new APIFilters(Retail.find({
+        createdAt: { $gte: startOfToday, $lte: endOfToday }
       }), req.query).pagination(resPerPage);
   
       const orders = await apiFilters.query.find()
-        .populate('shippingInfo user')
         .sort({ createdAt: -1 });
       // Debugging logs
       console.log('Orders:', orders);

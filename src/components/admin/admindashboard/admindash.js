@@ -70,7 +70,7 @@ const AdminDash = () => {
           </div>
 
           <div className="col-md-3">
-            <a href="#" class="card3 p-3 block max-w-sm bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+            <a href="admin/sell" class="card3 p-3 block max-w-sm bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
               <p class="font-normal text-gray-700 dark:text-gray-600">SHOPS SALES</p>
               <hr/>
               <p class="font-normal text-gray-700">Number of Sales: {sell.ordersCount}</p>
@@ -80,7 +80,7 @@ const AdminDash = () => {
 
           </div>
           <div className="col-md-3">
-          <a href="#" class="cardx2 p-3 block max-w-sm  border border-gray-200 rounded-lg shadow">
+          <a href="admin/bulk" class="cardx2 p-3 block max-w-sm  border border-gray-200 rounded-lg shadow">
               <p class="font-normal text-white dark:text-gray-600">WHOLE SALES ORDERS</p>
               <hr/>
               <p class="font-normal text-white">Number of Bulk Orders: {bulk.ordersCount}</p>

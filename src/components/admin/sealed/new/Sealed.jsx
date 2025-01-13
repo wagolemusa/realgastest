@@ -70,14 +70,14 @@ useEffect(() => {
                     onChange={onChange}
                 >
                     <option selected>Cylinder Size</option>
-                    <option value="3kgs">3kgs</option>
-                    <option value="6kgs">6kgs</option>
-                    <option value="12kgs">12kgs</option>
-                    <option value="12.5kgs">12.5kgs</option>
-                    <option value="13kgs">13kgs</option>
-                    <option value="15kgs">15kgs</option>
-                    <option value="25kgs">25kgs</option>
-                    <option value="45kgs">45kgs</option>
+                    <option value="3kgs">3</option>
+                    <option value="6kgs">6</option>
+                    <option value="12kgs">12</option>
+                    <option value="12.5kgs">12.5</option>
+                    <option value="13kgs">13</option>
+                    <option value="15kgs">15</option>
+                    <option value="25kgs">25</option>
+                    <option value="45kgs">45</option>
                 </select>
                 <br />
 

@@ -2,12 +2,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Link from "next/link";
-import AuthContext from "../../../../context/AuthContext";
+// import AuthContext fromcontext/AuthContext";
 // import { useSession, signOut } from "next-auth/react";
 
 const Retailsales = () => {
     const [data, setData] = useState([]);
-    const { user, setUser } = useContext(AuthContext);
+    const [branchdata, setBranchdate] = useState("");
+    // const { user, setUser } = useContext(AuthContext);
     const [sealtaken, setSealtaken] = useState("");
     const [sealreplaced, setSealreplaced] = useState("");
     const [cylinderType, setCylinderType] = useState("");
@@ -26,6 +27,15 @@ const Retailsales = () => {
 
     // Fetch data when the component mounts
     useEffect(() => {
+          async function fetchDatabranch(){
+            try{
+                const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/branch`);
+                setBranchdate(response.data);
+            } catch(error){
+                setError('Failed to fetch data');
+                console.error('Error fetching data:', error);
+            }
+        }
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/sealed/instock`);
@@ -34,8 +44,13 @@ const Retailsales = () => {
                 console.error('Error fetching data:', error);
             }
         };
+        fetchDatabranch();
         fetchData();
     }, []);
+
+
+// Fetch branches
+
 
     console.log("xdddd", data)
 
@@ -64,7 +79,7 @@ const Retailsales = () => {
             setCylinderSize(seal.cylinderSize || "");
             setCustomername(seal.customername || "");
             setPhone(seal.phone || "");
-            setBranch(seal.branch || "");
+          
         }
         setSearchQuery(""); // Clear search query after selection
     };
@@ -108,12 +123,12 @@ const Retailsales = () => {
         <>
             <div className='profileside'>
                 <div className="container py-3">
-                    <Link href="/admin/shopkeeper" className="btn btn-primary">Back</Link>
+                    <Link href="/admin/sell" className="btn btn-primary">Back</Link>
                     <div className="row">
                         <div className="col-md-4 py-4">
-                            <div className="userform">
+                            {/* <div className="userform">
                                 <h1>Gas Bought</h1>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="col-md-6 py-4">
@@ -153,7 +168,7 @@ const Retailsales = () => {
                                     {/* Fields */}
                                     <div className="form-group pt-2">
                                         <input
-                                            type="text"
+                                            type="number"
                                             className="form-control"
                                             placeholder="Cylinder Size"
                                             value={cylinderSize}
@@ -205,15 +220,20 @@ const Retailsales = () => {
                                             onChange={(e) => setCustomername(e.target.value)}
                                         />
                                     </div>
-                                    <div className="form-group pt-2">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Branch"
-                                            value={branch}
-                                            onChange={(e) => setBranch(e.target.value)}
-                                        />
-                                    </div>
+                                      <br/>
+                                    <select data-mdb-select-init list="browsers3" class="select
+                                        border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
+                                        name="branch"
+                                        value={branch}
+                                        onChange={(e) => setBranch(e.target.value)}
+                                    >
+                                      <option>Select branch</option>
+                                        {branchdata?.branch?.map(( pointdata, index ) => (
+                                        <option key={pointdata?.id || index} value={pointdata?.branchName}>
+                                        {pointdata?.branchName}
+                                    </option>
+                                      ))}
+                                    </select>
                                     {/* Dropdowns */}
                                     <div className="form-group pt-2">
                                         <select
