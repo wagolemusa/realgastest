@@ -12,6 +12,8 @@ const ListSales = () => {
     const [data, setData] = useState(null);
     const [branch, setBranch] = useState("");
     const [branchdata, setBranchdate] = useState("");
+    const [createdAt, setCreatedAt] = useState("");
+    const [datasale, setDatasale] = useState("")
     const [error, setError] = useState(null);
     const router = useRouter();
 
@@ -56,6 +58,40 @@ const ListSales = () => {
     }, []);
 
 
+    // Do the search here
+    const handleSave = async (e) => {
+        e.preventDefault();
+        setError(null);
+
+        const BookData = {
+            createdAt,
+            branch
+        };
+
+        try {
+            const response = await axios.post(`${process.env.ENVIRONMENT_URL}/api/admin/sell/searchSales`, BookData, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.status === 201) {
+                window.location.replace("/admin/sell");
+            }
+
+            setDatasale(response.data);
+        } catch (err) {
+            if (err.response) {
+                setError(err.response.data.message);
+            } else {
+                setError(err.message);
+            }
+        }
+    }
+
+    console.log("Saleeeee", datasale)
+
     return (
 
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -63,31 +99,32 @@ const ListSales = () => {
                 <Link href="/admin/sell/new" className="btn btn-primary">Sales Gas</Link>
             </h1>
             <div className="my-2 ml-4 retailcash">
-                Cash Sold <br />    {retail.totalCash}
+                Cash Sold <br />    {datasale.totalPrice}
             </div><br/>
-            <div class="grid gap-6 mb-6 md:grid-cols-3">
-                <div>
-                    <input type="date" class="form-control" placeholder="How many Kgs"
-                        onChange={e => setCreatedAt(e.target.value)} />
-
+            <form onSubmit={handleSave}>
+                <div class="grid gap-6 mb-6 md:grid-cols-3">
+                    <div>
+                        <input type="date" class="form-control" placeholder="How many Kgs"
+                            onChange={e => setCreatedAt(e.target.value)} />
+                    </div>
+                    <div>
+                    <select data-mdb-select-init list="browsers3" class="select
+                                            border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
+                                            name="branch"
+                                            value={branch}
+                                            onChange={(e) => setBranch(e.target.value)}
+                                        >
+                                        <option>Select branch</option>
+                                            {branchdata?.branch?.map(( pointdata, index ) => (
+                                            <option key={pointdata?.id || index} value={pointdata?.branchName}>
+                                            {pointdata?.branchName}
+                                        </option>
+                        ))}
+                    </select>
+                    </div>
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm  text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                 </div>
-                <div>
-                <select data-mdb-select-init list="browsers3" class="select
-                                        border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
-                                        name="branch"
-                                        value={branch}
-                                        onChange={(e) => setBranch(e.target.value)}
-                                    >
-                                      <option>Select branch</option>
-                                        {branchdata?.branch?.map(( pointdata, index ) => (
-                                        <option key={pointdata?.id || index} value={pointdata?.branchName}>
-                                        {pointdata?.branchName}
-                                    </option>
-                      ))}
-                </select>
-                </div>
-                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm  text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-            </div>
+            </form>
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                     <tr>
@@ -123,7 +160,7 @@ const ListSales = () => {
                 </thead>
                 <tbody>
 
-                    {data?.orders?.map((sales) => (
+                    {datasale?.products?.map((sales) => (
 
                         <tr key={sales._id} className="bg-white">
                             <td className="px-6 py-2">{sales?.sealtaken}</td>
