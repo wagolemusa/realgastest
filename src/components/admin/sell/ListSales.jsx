@@ -96,17 +96,21 @@ const ListSales = () => {
 
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
             <h1 className="text-3xl my-5 ml-4 font-bold">
-                <Link href="/admin/sell/new" className="btn btn-primary">Sales Gas</Link>
+                <Link href="/admin/sell/new" className="btn btn-primary">Sales Gas</Link>&nbsp;&nbsp;
+                <Link href="/admin/sell/allsales" className="btn btn-danger text-600">All Records</Link>
             </h1>
+  
             <div className="my-2 ml-4 retailcash">
                 Cash Sold <br />    {datasale.totalPrice}
             </div><br/>
+            
             <form onSubmit={handleSave}>
                 <div class="grid gap-6 mb-6 md:grid-cols-3">
                     <div>
                         <input type="date" class="form-control" placeholder="How many Kgs"
                             onChange={e => setCreatedAt(e.target.value)} />
                     </div>
+                    
                     <div>
                     <select data-mdb-select-init list="browsers3" class="select
                                             border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"

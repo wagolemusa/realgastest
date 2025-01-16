@@ -5,7 +5,7 @@ import Updateseal from '../model/updateseal';
 import Point from '../model/point';
 import APIFilters from "../utils/APIFilters"
 import phoneSms from '../../lib/sms';
-
+import { startOfWeek, endOfWeek } from 'date-fns';
 
 // create sell gas
 export const newRetail = async (req, res) => {
@@ -356,4 +356,45 @@ export const deleteSell = async (req, res, next) => {
   res.status(200).json({
     success: true,
   })
+}; 
+
+
+// query weekly data
+
+export const getWeeklyOrdersGraphData = async (req, res) => {
+  try {
+    const startOfCurrentWeek = startOfWeek(new Date(), { weekStartsOn: 1 }); // Week starts on Monday
+    const endOfCurrentWeek = endOfWeek(new Date(), { weekStartsOn: 1 }); // Week ends on Sunday
+
+    const data = await Retail.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: startOfCurrentWeek, $lte: endOfCurrentWeek }
+        },
+      },
+      {
+        $group: {
+          _id: { $dayOfWeek: '$createdAt' }, // Group by day of the week (1 = Sunday, 2 = Monday, ...)
+          totalRevenue: { $sum: '$price' },
+          totalOrders: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: 1 }, // Sort by day of the week
+      },
+    ]);
+
+    // Map the MongoDB dayOfWeek to more readable day names
+    const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const formattedData = data.map((item) => ({
+      day: weekDays[item._id - 1],
+      totalRevenue: item.totalRevenue,
+      totalOrders: item.totalOrders,
+    }));
+
+    res.status(200).json(formattedData);
+  } catch (err) {
+    console.error('Error fetching weekly graph data:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 };

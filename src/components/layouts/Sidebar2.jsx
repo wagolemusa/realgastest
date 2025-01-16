@@ -39,7 +39,12 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                             Dashboard
                         </a>
                     </li>
-
+                    <li className='sidebar-list-item'>
+                        <BsGrid1X2Fill className='icon' />
+                        <a href="/admin/analyis">
+                        Analysis
+                        </a>
+                    </li>
                     <li className='sidebar-list-item'>
                         <BsGrid1X2Fill className='icon' />
                         <a href="/admin/orders">
