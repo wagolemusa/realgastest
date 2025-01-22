@@ -57,8 +57,8 @@ const ListInvetory = () => {
                 <h1 className="text-3xl my-5 ml-4 font-bold">
                  <Link href="/admin/invetory/new" className="btn btn-primary">Add Invetory</Link>&nbsp;&nbsp;
                  <Link href="/admin/invetory/outofStock" className="btn btn-primary">Out Of Stock</Link>
-
                 </h1>
+                <h2 className="text-3xl my-3 ml-4 font-bold">Inventory Accessories</h2>
            
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
@@ -94,23 +94,11 @@ const ListInvetory = () => {
                         <td className="px-6 py-2">{branches?.added_stock}</td>
                         <td className="px-6 py-2">{branches?.stock_quantity}</td>
                         <td className="px-6 py-2">{branches?.stock}</td>
-                      
-                        <td className="px-6 py-2">
-                           
-                            <div>
-                           
-                            
-                            </div>
-                        </td>
                     </tr>
                     ))}
          
                 </tbody>
             </table>
-
-
-                    
-
             <div className="mb-6">
                 <CustromPagination
                     resPerPage={data?.resPerPage}

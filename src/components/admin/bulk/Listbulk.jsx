@@ -55,8 +55,9 @@ const ListBulk = () => {
     return (
 
         <Suspense className="container">
-             <h1 className="py-4 text-2xl pl-10 font-bold">Whole Sales</h1>
-             <Link href="/admin/bulk/new" className="btn btn-primary">Bulk Sales</Link>
+            <br/>
+             <Link href="/admin/bulk/new" className="btn btn-primary my-5">Bulk Sales</Link>
+             <h2 className="text-3xl my-3 ml-4 font-bold">Whole Sales</h2>         
 
             <div className="scroller">
                

@@ -30,7 +30,8 @@ const ListReferral = () => {
 
 
 
-        <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">           
+        <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">  
+          <h2 className="text-3xl my-3 ml-4 font-bold">Referral Points Withdraw</h2>         
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                     <tr>

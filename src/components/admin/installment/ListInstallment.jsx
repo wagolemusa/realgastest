@@ -54,9 +54,9 @@ const ListInstallment = () => {
                 <h1 className="text-3xl my-5 ml-4 font-bold">
                  <Link href="/admin/installment/new" className="btn btn-primary">Installment Payment</Link>&apos; &apos;
                  <Link href="/admin/customer/new" className="btn btn-primary">Create Customer</Link>
-
                 </h1>
-           
+                <h2 className="text-3xl my-3 ml-4 font-bold">List Of Installments</h2>         
+
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                     <tr>

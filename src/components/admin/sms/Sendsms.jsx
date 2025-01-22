@@ -48,7 +48,8 @@ const Sendsms = () =>{
      <section 
         style={{ maxWidth: "700px" }}
         className="main2 mt-10 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg">
-            
+            <h2 className="text-3xl my-3 ml-4 font-bold">Send Messages to all Custoners</h2>         
+
     
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg px-8 py-8">
             <form onSubmit={handleSave}>

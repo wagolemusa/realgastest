@@ -25,6 +25,7 @@ const Users = ({ data }) => {
         <h1 className="text-3xl my-5 ml-4 font-bold">
           {data?.users?.length} Users
         </h1>
+        <h2 className="text-3xl my-3 ml-4 font-bold">List Of Users</h2>         
         <table className="w-full text-sm text-left">
           <thead className="text-l text-gray-700 uppercase">
             <tr>
@@ -32,7 +33,7 @@ const Users = ({ data }) => {
                 Name
               </th>
               <th scope="col" className="px-6 py-3">
-                Email
+              Username
               </th>
               <th scope="col" className="px-6 py-3">
                 Referal Code
@@ -49,7 +50,7 @@ const Users = ({ data }) => {
             {data?.users?.map((user) => (
               <tr key={user?._id} className="bg-white">
                 <td className="px-6 py-2">{user?.name}</td>
-                <td className="px-6 py-2">{user?.email}</td>
+                <td className="px-6 py-2">{user?.username}</td>
                 <td className="px-6 py-2">{user?.referalCode}</td>
                 <td className="px-6 py-2">{user?.role}</td>
                 <td className="px-6 py-2">

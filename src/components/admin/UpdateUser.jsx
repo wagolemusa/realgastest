@@ -27,7 +27,7 @@ const UpdateUser = ({ user }) => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    const userData = { name, email, role };
+    const userData = { name, username, role };
 
     updateUser(user?._id, userData);
   };
@@ -77,7 +77,7 @@ const UpdateUser = ({ user }) => {
                                 onChange={(e) => setRole(e.target.value)}
                                 required
                             >
-                                {["user", "admin"].map((role) => (
+                                {["user", "admin", "shopkeeper"].map((role) => (
                                     <option key={role} value={role}>
                                         {role}
                                     </option>
