@@ -43,8 +43,9 @@ const ListCustomer = ({ data }) => {
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
                 <h1 className="text-3xl my-5 ml-4 font-bold">
                     ({ data?.productsCount}) <Link href="/admin/customer/new" className="btn btn-primary">Create Customer</Link>
-
                 </h1>
+                <h2 className="text-3xl my-3 ml-4 font-bold">List Of Customers</h2>         
+
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                     <tr>

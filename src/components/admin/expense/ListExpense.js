@@ -32,8 +32,9 @@ const ListExpense = () => {
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
                 <h1 className="text-3xl my-5 ml-4 font-bold">
                  <Link href="/admin/expense/new" className="btn btn-primary">Make Expenses</Link>
-
                 </h1>
+                <h2 className="text-3xl my-3 ml-4 font-bold">List Of Expenses</h2>
+
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                     <tr>

@@ -40,6 +40,18 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                         </a>
                     </li>
                     <li className='sidebar-list-item'>
+                        <MdOutlineLocalGasStation className='icon' />
+                        <a href="/admin/bulk">
+                            Bulk Gas
+                        </a>
+                    </li>
+                    <li className='sidebar-list-item'>
+                        <AiOutlineStock className='icon' />
+                        <a href="/admin/sell">
+                            Gas Sales
+                        </a>
+                    </li>
+                    <li className='sidebar-list-item'>
                         <BsGrid1X2Fill className='icon' />
                         <a href="/admin/analyis">
                         Analysis
@@ -107,18 +119,7 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                             Gas Bought
                         </a>
                     </li>
-                    <li className='sidebar-list-item'>
-                        <MdOutlineLocalGasStation className='icon' />
-                        <a href="/admin/bulk">
-                            Bulk Gas
-                        </a>
-                    </li>
-                    <li className='sidebar-list-item'>
-                        <AiOutlineStock className='icon' />
-                        <a href="/admin/sell">
-                            Gas Sales
-                        </a>
-                    </li>
+               
                     <li className='sidebar-list-item'>
                         <AiOutlineStock className='icon' />
                         <a href="/admin/sealed">
@@ -131,12 +132,12 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                             Resalers
                         </a>
                     </li>
-                    <li className='sidebar-list-item'>
+                    {/* <li className='sidebar-list-item'>
                         <AiOutlineStock className='icon' />
                         <a href="/admin/updatedseal">
                             Tracker Cylinders
                         </a>
-                    </li>
+                    </li> */}
                     <li className='sidebar-list-item'>
                         <FaCode className='icon' />
                         <a href="/admin/promocode">
@@ -149,17 +150,19 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
                             Expenses
                         </a>
                     </li>
-                    <div class="dropdown">
-                        <li className='sidebar-list-item'>
-                            <BiBookmarkAltPlus className='icon' />
-                            <a class="dropbtn">Accesories</a>
-                            <div class="dropdown-content">
-                                <a href="/admin/products">Post Accesories for Web</a>
-                                <a href="/admin/accessory">Accesory Category</a>
-                                <a href="/admin/invetory">New Invetory</a>
-                            </div>
-                        </li>
-                    </div>
+                    <li className='sidebar-list-item'>
+                        <FaCode className='icon' />
+                        <a href="/admin/accessory">
+                            Categories
+                        </a>
+                    </li>
+                    <li className='sidebar-list-item'>
+                        <FaCode className='icon' />
+                        <a href="/admin/invetory">
+                            Stock Invetory
+                        </a>
+                    </li>
+       
                     <li className='sidebar-list-item'>
                         <FcSalesPerformance className='icon' />
                         <a href="/admin/sold">
@@ -176,7 +179,7 @@ const Sidebarnav = ({ openSidebarToggle, OpenSidebar }) => {
 
                     <li className='sidebar-list-item'>
                         <BiCross className='icon' />
-                        <a href="/admin/gas">
+                        <a href="/admin/products">
                             Post Gas
                         </a>
                     </li>

@@ -27,6 +27,8 @@ const Products = ({ data }) => {
                 { data?.productsCount} Posted Accessories to Web
             </h1>
             <Link href="/admin/products/new" className="btn btn-primary">Post Accessories to Web</Link>&nbsp;&nbsp;
+            
+            
 
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">

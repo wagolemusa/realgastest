@@ -56,6 +56,8 @@ const ListInvetoryOut = () => {
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">
                 <h1 className="text-3xl my-5 ml-4 font-bold">
                 <Link href="/admin/invetory" className="btn btn-primary">Back</Link>  
+                <h2 className="text-3xl my-3 ml-4 font-bold">Out-In-Stock Accessories</h2>
+
 
                 </h1>
             <table className="table w-full text-sm text-left">
@@ -78,6 +80,9 @@ const ListInvetoryOut = () => {
                         </th>
                         <th scope="col" className="px-6 py-3">
                             Date
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Status
                         </th>
                         <th scope="col" className="px-6 py-3">
                             Actions

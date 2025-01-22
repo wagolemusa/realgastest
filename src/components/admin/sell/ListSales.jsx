@@ -129,6 +129,8 @@ const ListSales = () => {
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm  text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                 </div>
             </form>
+            <h2 className="text-3xl my-3 ml-4 font-bold">Sales Records</h2>
+
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                     <tr>
