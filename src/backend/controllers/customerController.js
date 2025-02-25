@@ -49,7 +49,7 @@ export const getCustomerById = async(req, res) =>{
 
 
 
-// update Products
+// update Customer
 export const updateCustomer = async(req, res, next) => {
     let customer = await Customer.findById(req.query.id);
 
