@@ -27,14 +27,14 @@ const employeeSchema = new mongoose.Schema({
     },
     idnumber: {
         type: String,
-        required: true
+        required: false
     },
     nextOfKinName: {
         type: String,
         required: false 
     },
     nextOfKinPhone: {
-        type: Number,
+        type: String,
         required: false 
     }
 

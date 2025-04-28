@@ -15,6 +15,7 @@ import  { InstallmentProvider } from "../context/InstallmentContext"
 import { ResalerProvider } from "../context/ResalerContext"
 import { SealedProvider } from "../context/SealedContext"
 import { ExpenseProvider } from "../context/ExpenseContext";
+import { EmployeeProvider } from  '../context/EmployeesContext'
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -42,7 +43,9 @@ export function GlobalProvider({ children }) {
                                                             <ResalerProvider>
                                                             <ExpenseProvider>
                                                             <SealedProvider>
+                                                            <EmployeeProvider>
                                                             <SessionProvider>{children}</SessionProvider>
+                                                            </EmployeeProvider>
                                                             </SealedProvider>
                                                             </ExpenseProvider>
                                                             </ResalerProvider> 

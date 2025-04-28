@@ -251,62 +251,124 @@ export const deleteSell = async(req, res, next) => {
 };
 
 
-// Search by Date, Branch, Sum Price, and Count Documents
+// // Search by Date, Branch, Sum Price, and Count Documents
+// export const getInStockProductsByDateAndBranch = async (req, res) => {
+//   try {
+//     const resPerPage = parseInt(req.query.resPerPage, 10) || 100; // Pagination size, default to 100
+//     const { createdAt, branch } = req.body; // Extract data from req.body
+
+//     console.log('Request Body:', req.body);
+
+//     // Validate and parse the provided date
+//     if (!createdAt) {
+//       return res.status(400).json({ error: 'Date query parameter is required' });
+//     }
+//     const queryDate = new Date(createdAt);
+//     if (isNaN(queryDate)) {
+//       return res.status(400).json({ error: 'Invalid date format' });
+//     }
+
+//     // Validate the branch input
+//     if (!branch) {
+//       return res.status(400).json({ error: 'Branch query parameter is required' });
+//     }
+
+//     // Get start and end of the provided date
+//     const startOfQueryDate = startOfDay(queryDate);
+//     const endOfQueryDate = endOfDay(queryDate);
+
+//     // Perform aggregation to count documents and sum the price
+//     const aggregationResults = await Retail.aggregate([
+//       {
+//         $match: {
+//           createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
+//           branch: branch,
+//         },
+//       },
+//       {
+//         $group: {
+//           _id: null, // Group all matching documents together
+//           totalPrice: { $sum: '$price' }, // Sum the price field
+//           productsCount: { $sum: 1 }, // Count the documents
+//         },
+//       },
+//     ]);
+
+//     // Set default values if no results are found
+//     const { totalPrice = 0, productsCount = 0 } = aggregationResults[0] || {};
+
+//     // Apply filters for pagination and get the matching products
+//     const products = await Retail.find({
+//       createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
+//       branch: branch,
+//     })
+//       .limit(resPerPage)
+//       .skip(resPerPage * ((req.query.page || 1) - 1))
+//       .sort({ createdAt: -1 });
+
+//     // Return the response
+//     res.status(200).json({
+//       success: true,
+//       productsCount,
+//       totalPrice,
+//       resPerPage,
+//       products,
+//     });
+//   } catch (err) {
+//     console.error('Error fetching products:', err);
+//     res.status(500).json({ error: err.message || 'Internal Server Error' });
+//   }
+// };
+
 export const getInStockProductsByDateAndBranch = async (req, res) => {
   try {
-    const resPerPage = parseInt(req.query.resPerPage, 10) || 100; // Pagination size, default to 100
-    const { createdAt, branch } = req.body; // Extract data from req.body
+    const resPerPage = parseInt(req.query.resPerPage, 10) || 100;
+    const { createdAt, branch } = req.body;
 
     console.log('Request Body:', req.body);
 
-    // Validate and parse the provided date
-    if (!createdAt) {
-      return res.status(400).json({ error: 'Date query parameter is required' });
-    }
-    const queryDate = new Date(createdAt);
-    if (isNaN(queryDate)) {
-      return res.status(400).json({ error: 'Invalid date format' });
+    // Initialize query object
+    let query = {};
+
+    // Validate and parse date if provided
+    if (createdAt) {
+      const queryDate = new Date(createdAt);
+      if (isNaN(queryDate)) {
+        return res.status(400).json({ error: 'Invalid date format' });
+      }
+      query.createdAt = { $gte: startOfDay(queryDate), $lte: endOfDay(queryDate) };
     }
 
-    // Validate the branch input
-    if (!branch) {
-      return res.status(400).json({ error: 'Branch query parameter is required' });
+    // Validate and add branch if provided
+    if (branch) {
+      query.branch = branch;
     }
 
-    // Get start and end of the provided date
-    const startOfQueryDate = startOfDay(queryDate);
-    const endOfQueryDate = endOfDay(queryDate);
+    // If neither date nor branch is provided, return an error
+    if (!createdAt && !branch) {
+      return res.status(400).json({ error: 'At least one of Date or Branch is required' });
+    }
 
     // Perform aggregation to count documents and sum the price
     const aggregationResults = await Retail.aggregate([
-      {
-        $match: {
-          createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
-          branch: branch,
-        },
-      },
+      { $match: query },
       {
         $group: {
-          _id: null, // Group all matching documents together
-          totalPrice: { $sum: '$price' }, // Sum the price field
-          productsCount: { $sum: 1 }, // Count the documents
+          _id: null,
+          totalPrice: { $sum: '$price' },
+          productsCount: { $sum: 1 },
         },
       },
     ]);
 
-    // Set default values if no results are found
     const { totalPrice = 0, productsCount = 0 } = aggregationResults[0] || {};
 
     // Apply filters for pagination and get the matching products
-    const products = await Retail.find({
-      createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
-      branch: branch,
-    })
+    const products = await Retail.find(query)
       .limit(resPerPage)
       .skip(resPerPage * ((req.query.page || 1) - 1))
       .sort({ createdAt: -1 });
 
-    // Return the response
     res.status(200).json({
       success: true,
       productsCount,
@@ -319,3 +381,4 @@ export const getInStockProductsByDateAndBranch = async (req, res) => {
     res.status(500).json({ error: err.message || 'Internal Server Error' });
   }
 };
+
