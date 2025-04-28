@@ -1312,6 +1312,16 @@ th{
   padding-left: 15px;
   font-size: 22px;
 }
+.scroller{
+  /* background: #4CAF50; */
+  color: white;
+  padding: 15px;
+  /* width: 50%; */
+  height: 900px;
+  overflow: scroll;
+  border: 1px solid #ccc;
+}
+
 
 @media screen and (max-width: 992px) {
   .grid-container {

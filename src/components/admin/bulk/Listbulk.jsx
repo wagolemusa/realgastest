@@ -10,6 +10,9 @@ import axios from "axios";
 
 const ListBulk = () => {
     const [data, setData] = useState(null);
+    const [resaler, setResaler] = useState("");
+    const [resalerdata, setResalerdata] = useState(null)
+    const [createdAt,  setCreatedAt] = useState(null)
     const [error, setError] = useState(null);
 
 
@@ -24,9 +27,56 @@ const ListBulk = () => {
                 console.error('Error fetching data:', error);
             }
         }
+
+        async function fetchDataReser() {
+            try {
+                const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/resaler`);
+                setResalerdata(response.data);
+            } catch (error) {
+                setError('Failed to fetch data');
+                console.error('Error fetching data:', error);
+            }
+        }
         fetchData();
+        fetchDataReser()
     }, []);
 
+    
+        // Do the search here
+        const handleSave = async (e) => {
+            e.preventDefault();
+            setError(null);
+    
+            const BookData = {
+                createdAt,
+                branch
+            };
+    
+            try {
+                const response = await axios.post(`${process.env.ENVIRONMENT_URL}/api/admin/sell/searchSalers`, BookData, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+    
+                if (response.status === 201) {
+                    window.location.replace("/admin/bulk");
+                }
+    
+                setDatasale(response.data);
+            } catch (err) {
+                if (err.response) {
+                    setError(err.response.data.message);
+                } else {
+                    setError(err.message);
+                }
+            }
+        }
+    
+        // console.log("Saleeeee", datasale)
+
+     
 
     const deleteBoughtData = async (id) => {
         // Utility function to validate ObjectId
@@ -57,9 +107,31 @@ const ListBulk = () => {
         <Suspense className="container">
             <br/>
              <Link href="/admin/bulk/new" className="btn btn-primary my-5">Bulk Sales</Link>
-             <h2 className="text-3xl my-3 ml-4 font-bold">Whole Sales</h2>         
 
-            <div className="scroller">
+             <h2 className="text-3xl my-3 ml-4 font-bold">Whole Sales Gas</h2>   
+
+                     <form onSubmit={handleSave}>
+                <div class="grid gap-6 mb-6 md:grid-cols-3">
+                    <div>
+                        <input type="date" class="form-control" placeholder="How many Kgs"
+                            onChange={e => setCreatedAt(e.target.value)} />
+                    </div>
+                    
+                    <div>
+                    <select className="form-select mb-3" onChange={(e) => setResaler(e.target.value)}>
+                                        <option>Resalers</option>
+                                        {resalerdata?.pointsofsales?.map((pointdata, index) => (
+                                            <option key={pointdata?.id || index} value={pointdata?.businessname}>
+                                                {pointdata?.businessname}
+                                            </option>
+                                        ))}
+                                    </select>
+                    </div>
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm  text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                </div>
+            </form>      
+
+            <div className="scroller overflow-auto">
                
                 {
                     data?.bulkgas?.map((gasdata) => {
