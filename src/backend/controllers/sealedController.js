@@ -78,50 +78,42 @@ export const deleteSealedCylinder = async(req, res, next) => {
 
 export const getInStockProductsByDateAndStatus = async (req, res) => {
   try {
-    const resPerPage = parseInt(req.query.resPerPage, 10) || 100; // Pagination size, default to 100
-    const { createdAt, statusStock } = req.body; // Extract data from req.body
+    const resPerPage = parseInt(req.query.resPerPage, 10) || 100;
+    const { createdAt, statusStock } = req.body;
 
-    console.log("Request Body:", req.body);
+    console.log('Request Body:', req.body);
 
-    // Validate and parse the provided date
-    if (!createdAt) {
-      return res.status(400).json({ error: 'Date query parameter is required' });
-    }
-    const queryDate = new Date(createdAt);
-    if (isNaN(queryDate)) {
-      return res.status(400).json({ error: 'Invalid date format' });
-    }
+    // Initialize query object
+    let query = {};
 
-    // Validate the statusStock input
-    if (!statusStock) {
-      return res.status(400).json({ error: 'statusStock query parameter is required' });
+    // Validate and parse date if provided
+    if (createdAt) {
+      const queryDate = new Date(createdAt);
+      if (isNaN(queryDate)) {
+        return res.status(400).json({ error: 'Invalid date format' });
+      }
+      query.createdAt = { $gte: startOfDay(queryDate), $lte: endOfDay(queryDate) };
     }
 
-    // Get start and end of the provided date
-    const startOfQueryDate = startOfDay(queryDate);
-    const endOfQueryDate = endOfDay(queryDate);
+    // Validate and add branch if provided
+    if (statusStock) {
+      query.statusStock = statusStock;
+    }
 
-    // Count documents with the specified date and statusStock
-    const productsCount = await Stockcylinder.countDocuments({
-      createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
-      statusStock: statusStock, // Use the provided statusStock
-    });
+    // If neither date nor branch is provided, return an error
+    if (!createdAt && !statusStock) {
+      return res.status(400).json({ error: 'At least one of Date or Branch is required' });
+    }
 
-    // Apply filters and execute the query
-    const apiFilters = new APIFilters(
-      Stockcylinder.find({
-        createdAt: { $gte: startOfQueryDate, $lte: endOfQueryDate },
-        statusStock: statusStock,
-      }),
-      req.query
-    ).pagination(resPerPage);
+    const products = await Stockcylinder.find(query)
+      .limit(resPerPage)
+      .skip(resPerPage * ((req.query.page || 1) - 1))
+      .sort({ createdAt: -1 });
 
-    const products = await apiFilters.query.find();
-
-    // Return the response
     res.status(200).json({
       success: true,
-      productsCount,
+    //   productsCount,
+    //   totalPrice,
       resPerPage,
       products,
     });

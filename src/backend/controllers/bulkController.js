@@ -106,6 +106,57 @@ export const getCountBulkAndSumRevenue = async (req, res) => {
     }
   };
   
+
+
+
+  export const getBulkSearchByDateAndResaler = async (req, res) => {
+    try {
+      const resPerPage = parseInt(req.query.resPerPage, 10) || 100;
+      const { createdAt, resaler } = req.body;
+  
+      console.log('Request Body:', req.body);
+  
+      // Initialize query object
+      let query = {};
+  
+      // Validate and parse date if provided
+      if (createdAt) {
+        const queryDate = new Date(createdAt);
+        if (isNaN(queryDate)) {
+          return res.status(400).json({ error: 'Invalid date format' });
+        }
+        query.createdAt = { $gte: startOfDay(queryDate), $lte: endOfDay(queryDate) };
+      }
+  
+      // Validate and add branch if provided
+      if (resaler) {
+        query.resaler = resaler;
+      }
+  
+      // If neither date nor branch is provided, return an error
+      if (!createdAt && !resaler) {
+        return res.status(400).json({ error: 'At least one of Date or Branch is required' });
+      }
+  
+      const bulkgas = await Bulk.find(query)
+        .limit(resPerPage)
+        .skip(resPerPage * ((req.query.page || 1) - 1))
+        .sort({ createdAt: -1 });
+  
+      res.status(200).json({
+        success: true,
+      //   productsCount,
+      //   totalPrice,
+        resPerPage,
+        bulkgas,
+      });
+
+      console.log(bulkgas)
+    } catch (err) {
+      console.error('Error fetching products:', err);
+      res.status(500).json({ error: err.message || 'Internal Server Error' });
+    }
+  };
   
 
 
