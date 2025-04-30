@@ -21,6 +21,17 @@ const ListSales = () => {
 
     useEffect(() => {
 
+         async function fetchData() {
+                    try {
+                        const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/sell`);
+                        setData(response.data);
+                    } catch (error) {
+                        setError('Failed to fetch data');
+                        console.error('Error fetching data:', error);
+                    }
+                }
+        
+
         async function fetchOnline() {
             try {
                 const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/shoper/retailsum`);
@@ -31,21 +42,21 @@ const ListSales = () => {
             }
         }
 
-        async function fetchData() {
-            try {
-                const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/shoper`);
-                setData(response.data);
-            } catch (error) {
-                setError('Failed to fetch data');
-                console.error('Error fetching data:', error);
-            }
-        }
+        // async function fetchData() {
+        //     try {
+        //         const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/shoper`);
+        //         setData(response.data);
+        //     } catch (error) {
+        //         setError('Failed to fetch data');
+        //         console.error('Error fetching data:', error);
+        //     }
+        // }
 
-        async function fetchDatabranch(){
-            try{
+        async function fetchDatabranch() {
+            try {
                 const response = await axios.get(`${process.env.ENVIRONMENT_URL}/api/admin/branch`);
                 setBranchdate(response.data);
-            } catch(error){
+            } catch (error) {
                 setError('Failed to fetch data');
                 console.error('Error fetching data:', error);
             }
@@ -80,7 +91,7 @@ const ListSales = () => {
                 window.location.replace("/admin/sell");
             }
 
-            setDatasale(response.data);
+            setData(response.data);
         } catch (err) {
             if (err.response) {
                 setError(err.response.data.message);
@@ -90,7 +101,7 @@ const ListSales = () => {
         }
     }
 
-    console.log("Saleeeee", datasale)
+    console.log("Saleeeee", data)
 
     return (
 
@@ -99,32 +110,32 @@ const ListSales = () => {
                 <Link href="/admin/sell/new" className="btn btn-primary">Sales Gas</Link>&nbsp;&nbsp;
                 <Link href="/admin/sell/allsales" className="btn btn-danger text-600">All Records</Link>
             </h1>
-  
+
             <div className="my-2 ml-4 retailcash">
-                Cash Sold <br />    {datasale.totalPrice}
-            </div><br/>
-            
+                Cash Sold <br />    {data.totalPrice}
+            </div><br />
+
             <form onSubmit={handleSave}>
                 <div class="grid gap-6 mb-6 md:grid-cols-3">
                     <div>
                         <input type="date" class="form-control" placeholder="How many Kgs"
                             onChange={e => setCreatedAt(e.target.value)} />
                     </div>
-                    
+
                     <div>
-                    <select data-mdb-select-init list="browsers3" class="select
+                        <select data-mdb-select-init list="browsers3" class="select
                                             border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
-                                            name="branch"
-                                            value={branch}
-                                            onChange={(e) => setBranch(e.target.value)}
-                                        >
-                                        <option>Select branch</option>
-                                            {branchdata?.branch?.map(( pointdata, index ) => (
-                                            <option key={pointdata?.id || index} value={pointdata?.branchName}>
-                                            {pointdata?.branchName}
-                                        </option>
-                        ))}
-                    </select>
+                            name="branch"
+                            value={branch}
+                            onChange={(e) => setBranch(e.target.value)}
+                        >
+                            <option>Select branch</option>
+                            {branchdata?.branch?.map((pointdata, index) => (
+                                <option key={pointdata?.id || index} value={pointdata?.branchName}>
+                                    {pointdata?.branchName}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm  text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                 </div>
@@ -166,7 +177,7 @@ const ListSales = () => {
                 </thead>
                 <tbody>
 
-                    {datasale?.products?.map((sales) => (
+                    {data?.sell?.map((sales) => (
 
                         <tr key={sales._id} className="bg-white">
                             <td className="px-6 py-2">{sales?.sealtaken}</td>

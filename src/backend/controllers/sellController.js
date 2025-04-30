@@ -364,7 +364,7 @@ export const getInStockProductsByDateAndBranch = async (req, res) => {
     const { totalPrice = 0, productsCount = 0 } = aggregationResults[0] || {};
 
     // Apply filters for pagination and get the matching products
-    const products = await Retail.find(query)
+    const sell = await Retail.find(query)
       .limit(resPerPage)
       .skip(resPerPage * ((req.query.page || 1) - 1))
       .sort({ createdAt: -1 });
@@ -374,7 +374,7 @@ export const getInStockProductsByDateAndBranch = async (req, res) => {
       productsCount,
       totalPrice,
       resPerPage,
-      products,
+      sell,
     });
   } catch (err) {
     console.error('Error fetching products:', err);
