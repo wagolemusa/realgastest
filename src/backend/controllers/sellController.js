@@ -204,17 +204,40 @@ export const getsumTodaySalesOnShop = async (req, res) => {
   };
   
 
+// // get Sales by ID
+// export const getsalesById = async(req, res) =>{
+//     const sell = await Sell.findById(req.query.id);
+//     console.log(sell)
+//     if(!sell){
+//         return res.status(401).json({
+//             message: "sales not fund"
+//         })
+//     }
+//     return res.status(201).json({
+//         sell
+//     })
+// }
+
+
+
 // get Sales by ID
-export const getsalesById = async(req, res) =>{
-    const sell = await Sell.findById(req.query.id);
-    if(!sell){
-        return res.status(401).json({
-            message: "sales not fund"
-        })
-    }
-    return res.status(201).json({
-        sell
-    })
+export const getsalesById = async(req, res) => {
+  try {
+      const sell = await Sell.findById(req.params.id); // Changed from req.query.id
+      if(!sell){
+          return res.status(404).json({ // Changed from 401 to 404
+              message: "Sales not found" // Fixed typo
+          });
+      }
+      return res.status(200).json({ // Changed from 201 to 200 (201 is for creation)
+          sell
+      });
+  } catch (error) {
+      return res.status(500).json({
+          message: "Internal server error",
+          error: error.message
+      });
+  }
 }
 
 

@@ -65,3 +65,31 @@ export const getPromoCode = async(req, res) =>{
     })
 
 }
+
+
+// Search by promo Code..................
+export const getSearchCode = async (req, res) => {
+    try {
+      const { code } = req.body;
+  
+      console.log('Request Body:', req.body);
+  
+      // Initialize query object
+      let query = {};
+
+      // Validate and add branch if provided
+      if (code) {
+        query.code = code;
+      }
+      const promo = await Promocode.find(query)
+ 
+      res.status(200).json({
+        success: true,
+        promo,
+      });
+    } catch (err) {
+      console.error('Error fetching products:', err);
+      res.status(500).json({ error: err.message || 'Internal Server Error' });
+    }
+  };
+  

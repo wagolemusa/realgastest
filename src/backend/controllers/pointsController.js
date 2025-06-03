@@ -123,3 +123,35 @@ export const updatepoints = async (req, res, next) => {
         });
     }
 };
+
+
+// Search by points
+export const getSearchPoints = async (req, res) => {
+    try {
+      const { phone } = req.body;
+  
+      console.log('Request Body:', req.body);
+  
+      // Initialize query object
+      let query = {};
+
+
+      // Validate and add branch if provided
+      if (phone) {
+        query.phone = phone;
+      }
+      const point = await Point.find(query)
+
+
+      console.log("pppppp", point)
+
+      res.status(200).json({
+        success: true,
+        point,
+      });
+    } catch (err) {
+      console.error('Error fetching products:', err);
+      res.status(500).json({ error: err.message || 'Internal Server Error' });
+    }
+  };
+  

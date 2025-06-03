@@ -17,7 +17,7 @@ const router = createRouter({
 dbConnect();
 
 router.use(isAuthenticatedUser).delete(deleteSell);
-router.use(isAuthenticatedUser).get(getsalesById)
 router.use(isAuthenticatedUser).put(updateSell)
+router.use(isAuthenticatedUser).get(getsalesById)
 
 export default router.handler();

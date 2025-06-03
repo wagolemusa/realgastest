@@ -4,9 +4,10 @@ import onError from "../../../../backend/middlewares/errors";
 
 import {
   
+  authorizeRoles,
   isAuthenticatedUser,
 } from "../../../../backend/middlewares/auth";
-import {  getCountOrders, getOrderProcessing, getsumTodaySales } from '../../../../backend/controllers/orderController';
+import {   getOrdersSearch  } from '../../../../backend/controllers/orderController';
 
 
 const router = createRouter({ 
@@ -16,7 +17,9 @@ const router = createRouter({
 dbConnect();
 
 
-router.use(isAuthenticatedUser).get(getOrderProcessing);
-// router.use(isAuthenticatedUser).get(getCountOrders)
+// router.use(isAuthenticatedUser).get(getOrders);
+router.use(isAuthenticatedUser)
+      .use(authorizeRoles('admin'))      
+      .get(getOrdersSearch)
 
 export default router.handler();

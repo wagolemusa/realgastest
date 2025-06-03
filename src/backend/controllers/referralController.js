@@ -42,3 +42,34 @@ export const updateReferral = async(req, res, next) => {
         refer,
     })
 };
+
+
+// Search by Refer Code.....
+export const getSearchRefer = async (req, res) => {
+    try {
+      const { referralcode } = req.body;
+  
+      console.log('Request Body:', req.body);
+  
+      // Initialize query object
+      let query = {};
+
+      // Validate and add branch if provided
+      if (referralcode) {
+        query.referralcode = referralcode;
+      }
+      const refer = await Referral.find(query)
+
+
+      console.log("pppppp", refer)
+
+      res.status(200).json({
+        success: true,
+        refer,
+      });
+    } catch (err) {
+      console.error('Error fetching products:', err);
+      res.status(500).json({ error: err.message || 'Internal Server Error' });
+    }
+  };
+  

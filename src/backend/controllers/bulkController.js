@@ -108,7 +108,7 @@ export const getCountBulkAndSumRevenue = async (req, res) => {
   
 
 
-
+// search bulk data and Resaler 
   export const getBulkSearchByDateAndResaler = async (req, res) => {
     try {
       const resPerPage = parseInt(req.query.resPerPage, 10) || 100;

@@ -30,10 +30,10 @@ const Orders = ({ orders }) => {
 
               <h1 className="text-3xl my-5 ml-4 font-bold">{orders?.ordersCount} Today &apos; s Process Order </h1>
               <a href="/admin/orders" className="btn btn-success">Today Orders</a>&apos; &apos;
-              <a href="/admin/orders/shippingToday" className="btn btn-primary">Shipped Orders</a>&apos; &apos;
+              <a href="/admin/orders/SearchOrder" className="btn btn-primary">All Orders</a>&apos; &apos;
               {/* <a href="/admin/orders/todayorder" className="btn btn-success">today&apos;s orders</a>&apos; &apos; */}
-              <a href="/admin/orders/AllshippedData" className="btn btn-info">All shipped Orders</a>&apos; &apos;
-              <a href="/admin/orders/processAll" className="btn btn-warning">All processing Orders</a>
+              {/* <a href="/admin/orders/AllshippedData" className="btn btn-info">All shipped Orders</a>&apos; &apos; */}
+              {/* <a href="/admin/orders/processAll" className="btn btn-warning">All processing Orders</a> */}
               <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                   <tr>

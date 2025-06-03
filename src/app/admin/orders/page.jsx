@@ -4,8 +4,7 @@ import { cookies } from "next/headers";
 
 import queryString from "query-string";
 
-// import Orders from "../../../components/admin/orders/Orders"
-// import ProcessData  from "../../../../components/admin/orders"
+
 import ProcessData from '../../../components/admin/orders/Orders'
 
 const getOrders = async (searchParams) => {

@@ -27,6 +27,63 @@ import { endOfDay, startOfDay } from 'date-fns';
 };
 
 
+export const getOrdersPX = async (req, res) => {
+  const resPerPage = 100;
+  const ordersCount = await Order.countDocuments();
+
+  const apiFilters = new APIFilters(Order.find(), req.query).pagination(
+    resPerPage
+  );
+const orders = await apiFilters.query.find()
+  .populate("shippingInfo user")
+  .sort({createdAt: -1})
+
+res.status(200).json({
+  ordersCount,
+  resPerPage,
+  orders,
+});
+};
+
+
+
+export const getOrdersSearch = async (req, res, next) => {
+  try {
+    const resPerPage = 100;
+    const ordersCount = await Order.countDocuments();
+
+    const apiFilters = new APIFilters(Order.find(), req.query).pagination(resPerPage);
+    const orders = await apiFilters.query.find().sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      ordersCount,
+      resPerPage,
+      orders,
+    });
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ success: false, error: "Server Error" });
+  }
+};
+
+
+// export const getOrdersSearch = async (req, res) => {
+//   const resPerPage = 100;
+//   const ordersCount = await Order.countDocuments();
+//   const apiFilters = new APIFilters(Order.find(), req.query).pagination(
+//     resPerPage
+//   );
+// const orders = await apiFilters.query.find()
+//   .sort({createdAt: -1})
+
+// res.status(200).json({
+//   ordersCount,
+//   resPerPage,
+//   orders,
+// });
+// };
+
 
 //  query today's  shipped orders 
 export const getOrdersToday = async (req, res) => {
@@ -294,21 +351,74 @@ export const getOrderAllShippedData = async (req, res) => {
   }
 }
 
-
-
-// Get orders by ID
 export const getOrderByID = async (req, res, next) => {
-  const order = await Order.findById(req.query.id).populate(
-    "shippingInfo user"
-  );
+  try {
+    // Additional admin check (redundant but secure)
+    if (req.user.role !== 'admin') {
+      return next(new ErrorHandler('Unauthorized access', 403));
+    }
 
-  if (!order) {
-    return next(new ErrorHandler("No Order found with this ID", 404));
+    const order = await Order.findById(req.query.id)
+      .populate('shippingInfo')
+      .populate('user', 'name email phoneNo');
+
+    if (!order) {
+      return next(new ErrorHandler("Order not found", 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      order
+    });
+  } catch (error) {
+    next(error);
   }
-  res.status(200).json({
-    order,
-  });
 };
+
+// // Get orders by ID
+// export const getOrderByID = async (req, res, next) => {
+//   const order = await Order.findById(req.query.id)
+//   // .populate(
+//   //   "shippingInfo user"
+//   // )
+//   .populate({
+//     path: "user",
+//     select: 'street city state zipCode country phoneNo name',
+//   });
+//   if (!order) {
+//     return next(new ErrorHandler("No Order found with this ID", 404));
+//   }
+//   res.status(200).json({
+//     order,
+//   });
+// };
+
+// export const getOrderByID = async (req, res, next) => {
+//   try {
+//     const order = await Order.findById(req.query.id)
+//       .populate({
+//         path: 'shippingInfo',
+//         select: 'street city state zipCode country phoneNo' // Explicitly select fields
+//       })
+//       .populate({
+//         path: 'user',
+//         model: 'User',
+//         select: 'name email phoneNo' // only get these fields
+//       });
+
+//     if (!order) {
+//       return next(new ErrorHandler("No Order found with this ID", 404));
+//     }
+
+//     console.log("Orrrrr", order)
+//     res.status(200).json({
+//       success: true,
+//       order,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 
 
@@ -564,5 +674,71 @@ export const webhook = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+
+
+
+// Search for shipping and procecing
+export const getSearchOrders = async (req, res) => {
+  try {
+    const resPerPage = parseInt(req.query.resPerPage, 10) || 100;
+    const { createdAt, orderStatus } = req.body;
+
+    console.log('Request Body:', req.body);
+
+    // Initialize query object
+    let query = {};
+
+    // Validate and parse date if provided
+    if (createdAt) {
+      const queryDate = new Date(createdAt);
+      if (isNaN(queryDate)) {
+        return res.status(400).json({ error: 'Invalid date format' });
+      }
+      query.createdAt = { $gte: startOfDay(queryDate), $lte: endOfDay(queryDate) };
+    }
+
+    // Validate and add branch if provided
+    if (orderStatus) {
+      query.orderStatus = orderStatus;
+    }
+
+    // If neither date nor branch is provided, return an error
+    if (!createdAt && !orderStatus) {
+      return res.status(400).json({ error: 'At least one of Date or Branch is required' });
+    }
+
+    // Perform aggregation to count documents and sum the price
+    const aggregationResults = await Order.aggregate([
+      { $match: query },
+      {
+        $group: {
+          _id: null,
+          totalAmount: { $sum: '$price' },
+          productsCount: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const { totalAmount = 0, productsCount = 0 } = aggregationResults[0] || {};
+
+    // Apply filters for pagination and get the matching products
+    const orders = await Order.find(query)
+      .limit(resPerPage)
+      .skip(resPerPage * ((req.query.page || 1) - 1))
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      productsCount,
+      totalAmount,
+      resPerPage,
+      orders,
+    });
+  } catch (err) {
+    console.error('Error fetching products:', err);
+    res.status(500).json({ error: err.message || 'Internal Server Error' });
   }
 };

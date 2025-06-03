@@ -53,3 +53,33 @@ export const getExpenseById = async(req, res) =>{
         expense
     })
 }
+
+
+// Search By expense Date .......
+
+export const getSearchExpenseDate = async (req, res) => {
+    try{
+        const { date } = req.body;
+        console.log('Request Body:', req.body);
+  
+        // Initialize query object
+        let query = {}
+
+        if (date) {
+            query.date = date;
+        }
+
+        const expense = await Expense.find(query)
+        console.log('Request expense:', expense);
+  
+
+        res.status(200).json({
+            success: true,
+            expense
+        })
+
+    } catch(err){
+        console.error('Error fetching expense data:', err);
+        res.status(500).json({error: err.message || 'Internal Server Error'});
+    }
+};

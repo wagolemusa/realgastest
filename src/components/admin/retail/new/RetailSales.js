@@ -123,7 +123,7 @@ const Retailsales = () => {
         <>
             <div className='profileside'>
                 <div className="container py-3">
-                    <Link href="/admin/sell" className="btn btn-primary">Back</Link>
+                    {/* <Link href="/admin/sell" className="btn btn-primary">Back</Link> */}
                     <div className="row">
                         <div className="col-md-4 py-4">
                             {/* <div className="userform">

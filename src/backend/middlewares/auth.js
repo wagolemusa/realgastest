@@ -15,6 +15,20 @@ const isAuthenticatedUser = async (req, res, next) => {
   next();
 };
 
+// middlewares/auth.js
+// export const authorizeRoles = (...roles) => {
+//   return (req, res, next) => {
+//     if (!req.user || !roles.includes(req.user.role)) {
+//       return next(
+//         new ErrorHandler(
+//           `Role (${req.user?.role || 'none'}) is not authorized to access this resource`,
+//           403
+//         )
+//       );
+//     }
+//     next();
+//   };
+// };
 
 const authorizeRoles = (...roles) => {
   return (req, res, next) => {
