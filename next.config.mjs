@@ -31,6 +31,9 @@ const nextConfig = {
     images: {
         domains: ["res.cloudinary.com"],
     },
+    experimental: {
+        incrementalCacheHandlerPath: require.resolve('./cache-handler.js'),
+      },
 };
 
 // export default withPWA(pwaConfig)(nextConfig);
