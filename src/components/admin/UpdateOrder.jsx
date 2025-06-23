@@ -61,8 +61,9 @@ const UpdateOrder = ({ order }) => {
                     <p className="text-gray-400 mb-1">Delivery address</p>
                     <ul className="text-gray-600">
                         <li>{order?.shippingInfo?.street}</li>
-                        <li>{order?.shippingInfo?.city} {order?.shippingInfo?.state} {order?.shippingInfo?.zipCode}</li>
-                        <li>{order?.shippingInfo?.country}</li>
+                        {/* <li>{order?.shippingInfo?.locationArea} </li>
+                        <li> Map URL: {order?.shippingInfo?.mapurl}</li>
+                        <li>Described Area:  {order?.shippingInfo?.describeLocation}</li> */}
                     </ul>
                 </div>
                 <div>

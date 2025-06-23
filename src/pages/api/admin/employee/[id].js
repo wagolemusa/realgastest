@@ -15,8 +15,9 @@ const router = createRouter({
 
 dbConnect();
 
-router.use(isAuthenticatedUser).put(updateEmployee);
 router.use(isAuthenticatedUser).get(getEmployeeById);
+router.use(isAuthenticatedUser).put(updateEmployee);
+
 // router.use(isAuthenticatedUser).delete(deleteCustomer)
 
 

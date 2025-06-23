@@ -21,4 +21,5 @@ router.use(isAuthenticatedUser).post(newPoint);
 router.use(isAuthenticatedUser).get(getPointData)
 
 
+
 export default router.handler();

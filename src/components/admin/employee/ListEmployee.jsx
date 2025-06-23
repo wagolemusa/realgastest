@@ -70,12 +70,8 @@ const ListEmployee = ({ data }) => {
                         <th scope="col" className="px-6 py-3">
                             ID Number
                         </th>
-                        <th scope="col" className="px-6 py-3">
-                            Next of Kin Name
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Next of Kin Phone
-                        </th>
+                      
+                   
                         <th scope="col" className="px-6 py-3">
                             Actions
                         </th>
@@ -93,13 +89,12 @@ const ListEmployee = ({ data }) => {
                         <td className="px-6 py-2">{product?.sex}</td>
                         <td className="px-6 py-2">{product?.salary}</td>
                         <td className="px-6 py-2">{product?.idnumber}</td>
-                        <td className="px-6 py-2">{product?.nextOfKinName}</td>
-                        <td className="px-6 py-2">{product?.nextOfKinPhone}</td>
+                      
                         <td className="px-6 py-2">
                            
                             <div>
                                 <Link
-                                    href={`/admin/customer/new/${product?._id}`}
+                                    href={`/admin/employee/new/${product?._id}`}
                                     className="px-2 py-2 inline-block text-green-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                                 >
                                     {/* <i className="fa fa-image" aria-hidden="true"></i> */}

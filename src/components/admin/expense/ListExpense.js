@@ -9,8 +9,9 @@ import axios from "axios";
 
 const ListExpense = () => {
     const [data, setData] = useState(null);
+    const [date, setDate] = useState(null);
     const [error, setError] = useState(null);
-
+    const [loading, setLoading] = useState(null);
 
     useEffect(() => {
         async function fetchData(){
@@ -25,6 +26,32 @@ const ListExpense = () => {
         fetchData();
     }, []);
 
+    const handleSave = async (e) => {
+        e.preventDefault();
+        setError(null);
+
+        const BookData = {
+            date
+        };
+
+        try {
+            setLoading(true);
+            const response = await axios.post(`${process.env.ENVIRONMENT_URL}/api/admin/expense/searchByDate`, BookData, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            setData(response.data);
+        } catch (err) {
+            if (err.response) {
+                setError(err.response.data.message);
+            } else {
+                setError(err.message);
+            }
+        }
+    }
   
   
     return (
@@ -34,6 +61,24 @@ const ListExpense = () => {
                  <Link href="/admin/expense/new" className="btn btn-primary">Make Expenses</Link>
                 </h1>
                 <h2 className="text-3xl my-3 ml-4 font-bold">List Of Expenses</h2>
+
+                <form onSubmit={handleSave}>
+                <div className="grid gap-6 mb-6 md:grid-cols-3">
+                    <div>
+                        <input type="date" className="form-control" placeholder="Search By Date"
+                            onChange={e => setDate(e.target.value)} />
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                        Search By Date
+                    </button>
+                </div>
+            </form>
+
 
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">

@@ -9,6 +9,8 @@ import axios from "axios";
 
 const ListReferral = () => {
     const [data, setData] = useState(null);
+    const [referralcode, setReferralcode] = useState(null);
+    const [loading, setLoading] = useState(null)
     const [error, setError] = useState(null);
 
 
@@ -26,12 +28,54 @@ const ListReferral = () => {
     }, []);
 
 
+      const handleSave = async (e) => {
+            e.preventDefault();
+            setError(null);
+    
+            const BookData = {
+                referralcode
+            };
+    
+            try {
+                setLoading(true);
+                const response = await axios.post(`${process.env.ENVIRONMENT_URL}/api/admin/referral/searchrefer`, BookData, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+    
+                setData(response.data);
+            } catch (err) {
+                if (err.response) {
+                    setError(err.response.data.message);
+                } else {
+                    setError(err.message);
+                }
+            }
+        }
+    
+
     return (
-
-
-
         <Suspense className="customer relative overflow-x-auto shadow-md sm:rounded-lg">  
-          <h2 className="text-3xl my-3 ml-4 font-bold">Referral Points Withdraw</h2>         
+          <h2 className="text-3xl my-3 ml-4 font-bold">Referral Points Withdraw</h2>      
+
+          <form onSubmit={handleSave}>
+                <div className="grid gap-6 mb-6 md:grid-cols-3">
+                    <div>
+                        <input type="text" className="form-control" placeholder="Search Referral Code"
+                            onChange={e => setReferralcode(e.target.value)} />
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                        Search
+                    </button>
+                </div>
+            </form>   
             <table className="table w-full text-sm text-left">
                 <thead className="text-l text-gray-700 uppercase">
                     <tr>
