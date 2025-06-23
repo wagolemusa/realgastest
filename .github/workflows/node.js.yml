@@ -1,0 +1,37 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [22.16.0]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    env:
+      ENVIRONMENT_URL: ${{secrets.ENVIRONMENT_URL}}
+      NEXTAUTH_URL: ${{secrets.NEXTAUTH_URL}}
+      DB_URL: ${{secrets.DB_URL}}
+      CLOUND_NAME: ${{secrets.CLOUND_NAME}}
+      CLOUDINARY_API_KEY: ${{secrets.CLOUDINARY_API_KEY}}
+      CLOUDINARY_API_SECRET: ${{secrets.CLOUDINARY_API_SECRET}}
+      NEXTAUTH_SECRET: ${{secrets.NEXTAUTH_SECRET}}
+      STRIPE_PUBLIC_KEY: ${{secrets.STRIPE_PUBLIC_KEY}}
+      STRIPE_PRIVATE_KEY: ${{secrets.STRIPE_PRIVATE_KEY}}
+      AFRICASTALKING_API_KEY: ${{secrets.AFRICASTALKING_API_KEY}}
+      AFRICASTALKING_USERNAME: ${{secrets.AFRICASTALKING_USERNAME}}
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present
+    
