@@ -343,6 +343,7 @@ export const deleteSell = async(req, res, next) => {
 //   }
 // };
 
+
 export const getInStockProductsByDateAndBranch = async (req, res) => {
   try {
     const resPerPage = parseInt(req.query.resPerPage, 10) || 100;
