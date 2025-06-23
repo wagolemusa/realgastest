@@ -8,12 +8,13 @@ jobs:
   build:
 
     runs-on: self-hosted
-
+    timeout-minutes: 30  # Increase timeout
     strategy:
       matrix:
         node-version: [22.16.0]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     env:
+      NODE_OPTIONS: --max-old-space-size=4096
       ENVIRONMENT_URL: ${{secrets.ENVIRONMENT_URL}}
       NEXTAUTH_URL: ${{secrets.NEXTAUTH_URL}}
       DB_URL: ${{secrets.DB_URL}}
