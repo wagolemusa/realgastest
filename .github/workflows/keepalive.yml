@@ -1,0 +1,16 @@
+name: Runner Keep-Alive
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'  # Runs every 15 minutes
+  workflow_dispatch:        # Allows manual triggering
+
+jobs:
+  ping:
+    runs-on: self-hosted
+    steps:
+      - name: Prevent idle timeout
+        run: |
+          echo "🏃 Runner keep-alive triggered at $(date)"
+          echo "This prevents the runner from going idle"
+          echo "Next run in 15 minutes..."
