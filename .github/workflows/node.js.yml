@@ -3,16 +3,16 @@ name: Node.js CI
 on:
   push:
     branches: [ "master" ]
+  schedule:
+    - cron: '0 */3 * * *'  # Additional trigger every 3 hours
 
 jobs:
   build:
-
     runs-on: self-hosted
-    timeout-minutes: 30  # Increase timeout
+    timeout-minutes: 30
     strategy:
       matrix:
         node-version: [18.17.0]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     env:
       NODE_OPTIONS: --max-old-space-size=4096
       ENVIRONMENT_URL: ${{secrets.ENVIRONMENT_URL}}
